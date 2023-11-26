@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://ecglalns8jkw"]
+
+[ext_resource type="Script" path="res://scenes/projectiles/Missile.gd" id="1_2tltq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8qvnm"]
+radius = 8.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mgwfn"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b001a"]
+radius = 310.002
+
+[node name="Missile" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_2tltq")
+health = 2
+baseAcceleration = 1000
+baseSpeed = 1500
+metadata/_edit_group_ = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8qvnm")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_mgwfn")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_b001a")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_targeting_area_entered"]

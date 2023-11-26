@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwnmpqgm6tpc5"]
+
+[ext_resource type="PackedScene" uid="uid://xt22v7a85654" path="res://scenes/abilities/gun.tscn" id="1_fr6d0"]
+[ext_resource type="Script" path="res://scenes/abilities/spiral.gd" id="2_k1gyx"]
+
+[node name="Spiral" instance=ExtResource("1_fr6d0")]
+script = ExtResource("2_k1gyx")
+bulletSpeed = 800
+bulletHealth = 1
+bulletLifespan = 2
+damage = 2
+cooldown = 0.1
+duration = -1e+06
+cost = 15
+
+[node name="Label" parent="." index="1"]
+text = "Spiral"

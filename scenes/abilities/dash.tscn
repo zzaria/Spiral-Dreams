@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwo5sm6rdodam"]
+
+[ext_resource type="Script" path="res://scenes/abilities/dash.gd" id="1_kcwkx"]
+[ext_resource type="Texture2D" uid="uid://4hliji7ie28i" path="res://art/enemyFlyingAlt_1.png" id="1_x4tww"]
+
+[node name="Dash" type="Node2D"]
+script = ExtResource("1_kcwkx")
+cooldown = 1.0
+duration = 0.2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(26, 29)
+scale = Vector2(0.3, 0.254)
+texture = ExtResource("1_x4tww")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 12.0
+offset_top = -4.0
+offset_right = 52.0
+offset_bottom = 22.0
+text = "Dash"

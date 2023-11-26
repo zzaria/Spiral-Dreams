@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnq4nfcak10w6"]
+
+[ext_resource type="Script" path="res://scenes/abilities/Teleport.gd" id="1_2o56f"]
+[ext_resource type="Texture2D" uid="uid://4hliji7ie28i" path="res://art/enemyFlyingAlt_1.png" id="2_1266f"]
+
+[node name="Teleport" type="Node2D"]
+script = ExtResource("1_2o56f")
+cooldown = 10.0
+duration = 0.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(26, 29)
+scale = Vector2(0.3, 0.254)
+texture = ExtResource("2_1266f")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 12.0
+offset_top = -4.0
+offset_right = 52.0
+offset_bottom = 22.0
+text = "Teleport"

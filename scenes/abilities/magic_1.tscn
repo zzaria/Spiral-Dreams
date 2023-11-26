@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://crgvkwrd66qqt"]
+
+[ext_resource type="PackedScene" uid="uid://xt22v7a85654" path="res://scenes/abilities/gun.tscn" id="1_gfs51"]
+
+[node name="Magic1" instance=ExtResource("1_gfs51")]

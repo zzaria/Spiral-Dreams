@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://chd8lws4nd8np"]
+
+[ext_resource type="PackedScene" uid="uid://cvwym2cfc8mkr" path="res://scenes/abilities/ability.tscn" id="1_o8dw5"]
+[ext_resource type="Script" path="res://scenes/abilities/Gun.gd" id="2_jmr8x"]
+[ext_resource type="Texture2D" uid="uid://4hliji7ie28i" path="res://art/enemyFlyingAlt_1.png" id="2_v7iot"]
+[ext_resource type="PackedScene" uid="uid://dejq553fwr3ph" path="res://scenes/projectiles/interceptor.tscn" id="3_lj1l4"]
+
+[node name="Point defense" instance=ExtResource("1_o8dw5")]
+script = ExtResource("2_jmr8x")
+bullet = ExtResource("3_lj1l4")
+bulletSpeed = 1000
+bulletHealth = 1
+bulletLifespan = 0.5
+cooldown = 0.05
+duration = 0.0
+
+[node name="Label" parent="." index="0"]
+text = "Interceptor"
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="1"]
+position = Vector2(26, 29)
+scale = Vector2(0.3, 0.254)
+texture = ExtResource("2_v7iot")

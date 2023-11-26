@@ -1,0 +1,207 @@
+[gd_scene load_steps=10 format=3 uid="uid://c8ywjgngxjsip"]
+
+[ext_resource type="Texture2D" uid="uid://p4n7816y6ti2" path="res://art/playerGrey_up1.png" id="1_gew4j"]
+[ext_resource type="Script" path="res://scenes/Player.gd" id="1_xyh4u"]
+[ext_resource type="Texture2D" uid="uid://70s825mu4hcm" path="res://art/playerGrey_up2.png" id="2_eutt8"]
+[ext_resource type="Texture2D" uid="uid://2hv86o4ir7l8" path="res://art/playerGrey_walk1.png" id="3_8pdeq"]
+[ext_resource type="Texture2D" uid="uid://bpj53fa3exf3u" path="res://art/playerGrey_walk2.png" id="4_ps5dt"]
+[ext_resource type="PackedScene" uid="uid://qjrifqoruxpn" path="res://scenes/inventory.tscn" id="6_g4rmu"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e8tpw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_gew4j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_eutt8")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_8pdeq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ps5dt")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6vtl0"]
+radius = 26.0
+height = 72.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mgwfn"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath(".:maxHealth")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+properties/2/path = NodePath(".:health")
+properties/2/spawn = true
+properties/2/sync = true
+properties/2/watch = false
+properties/3/path = NodePath(".:maxEnergy")
+properties/3/spawn = true
+properties/3/sync = true
+properties/3/watch = false
+properties/4/path = NodePath(".:energy")
+properties/4/spawn = true
+properties/4/sync = true
+properties/4/watch = false
+properties/5/path = NodePath(".:score")
+properties/5/spawn = true
+properties/5/sync = true
+properties/5/watch = false
+
+[node name="Player" type="Area2D" groups=["player"]]
+collision_mask = 3
+script = ExtResource("1_xyh4u")
+score = 0
+maxHealth = 60
+baseAcceleration = 4000
+metadata/_edit_group_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_e8tpw")
+animation = &"up"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_6vtl0")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Inventory" parent="CanvasLayer" instance=ExtResource("6_g4rmu")]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -546.0
+offset_bottom = 276.0
+grow_horizontal = 0
+
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer"]
+offset_left = 2.0
+offset_top = 3.0
+offset_right = 128.0
+offset_bottom = 29.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/HealthBar"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Health"
+
+[node name="EnergyBar" type="ProgressBar" parent="CanvasLayer"]
+offset_left = 4.0
+offset_top = 32.0
+offset_right = 146.0
+offset_bottom = 59.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="CanvasLayer/EnergyBar"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Energy"
+
+[node name="ScoreDisplay" type="ColorRect" parent="CanvasLayer"]
+offset_left = 144.0
+offset_top = 2.0
+offset_right = 254.0
+offset_bottom = 28.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="CanvasLayer/ScoreDisplay"]
+layout_mode = 0
+offset_left = 5.0
+offset_right = 48.0
+offset_bottom = 26.0
+text = "Score
+"
+
+[node name="DeathScreen" type="MarginContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 200
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 200
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/DeathScreen"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DeathScreen/PanelContainer"]
+layout_mode = 2
+
+[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/DeathScreen/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/DeathScreen/PanelContainer/VBoxContainer/CenterContainer2"]
+layout_mode = 2
+text = "Game Over"
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/DeathScreen/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/DeathScreen/PanelContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Respawn" type="Button" parent="CanvasLayer/DeathScreen/PanelContainer/VBoxContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+text = "Respawn"
+
+[node name="Quit" type="Button" parent="CanvasLayer/DeathScreen/PanelContainer/VBoxContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="MessageBox" type="MarginContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 200
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 200
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/MessageBox"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/MessageBox/CenterContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MessageBox/CenterContainer/Panel"]
+layout_mode = 2
+offset_right = 106.0
+offset_bottom = 26.0
+
+[node name="Label" type="Label" parent="CanvasLayer/MessageBox/CenterContainer/Panel/PanelContainer"]
+layout_mode = 2
+text = "Level Starting"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_mgwfn")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="pressed" from="CanvasLayer/DeathScreen/PanelContainer/VBoxContainer/CenterContainer/HBoxContainer/Respawn" to="." method="_on_respawn_pressed"]
+[connection signal="pressed" from="CanvasLayer/DeathScreen/PanelContainer/VBoxContainer/CenterContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]

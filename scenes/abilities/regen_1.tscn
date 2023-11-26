@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bydot2u226dh8"]
+
+[ext_resource type="PackedScene" uid="uid://bwo5sm6rdodam" path="res://scenes/abilities/dash.tscn" id="1_tf1rn"]
+[ext_resource type="Script" path="res://scenes/abilities/Regen1.gd" id="2_8q2wp"]
+
+[node name="Regen1" instance=ExtResource("1_tf1rn")]
+script = ExtResource("2_8q2wp")
+cooldown = 0.1
+duration = 0.1
+
+[node name="Label" parent="." index="1"]
+text = "Regen 1"
