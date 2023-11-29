@@ -13,6 +13,7 @@ bulletLifespan = 2
 damage = 8
 cooldown = 0.85
 cost = 10
+abilityType = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(26, 29)

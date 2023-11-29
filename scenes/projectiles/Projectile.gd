@@ -8,7 +8,6 @@ var team
 var owner2
 @export var health = 0
 var velocity
-var incomingDamage
 var lifeSpan
 
 @export var baseAcceleration=0
@@ -34,7 +33,6 @@ func init(_position=Vector2.ZERO,_velocity=Vector2.ZERO,_owner2=null,_team=0,_li
 	damage=_damage
 	maxHealth=_maxHealth
 	health=maxHealth
-	incomingDamage=0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():	
@@ -42,7 +40,6 @@ func _ready():
 
 func reset():
 	health=maxHealth
-	incomingDamage=0
 
 func _enter_tree():
 	pass

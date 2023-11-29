@@ -39,17 +39,18 @@ func _ready():
 	var i=0	
 	for slot in get_node("LevelConfig/CenterContainer/Inventory/DefaultInventory/GridContainer").get_children():
 		if equip[i]!=null:
-			Global.initialEquip+=[load(itemsPath+equip[i]+".tscn").instantiate()]
+			equip[i]+=".tscn"
+			Global.initialEquip+=[load(itemsPath+equip[i]).instantiate()]
 		i+=1
 	var itemList=getItems()
-	i=0
-	for slot in get_node("LevelConfig/CenterContainer/Inventory/ItemSelect/GridContainer").get_children():
-		if i>=itemList.size():
-			break
-		Global.itemList+=[load(itemsPath+itemList[i]).instantiate()]
-		Global.initialEquip+=[load(itemsPath+itemList[i]).instantiate()]
-		i+=1
-	
+	print_debug(equip)
+	for item in itemList:
+		Global.itemList+=[load(itemsPath+item).instantiate()]
+		print_debug(item," ",item in equip)
+		if item in equip:
+			continue
+		Global.initialEquip+=[load(itemsPath+item).instantiate()]
+
 func _on_h_slider_value_changed(value):
 	playerCount=value
 	get_node("LevelConfig/VBoxContainer/SpinBox").value=value
@@ -77,16 +78,22 @@ func _on_start_button_pressed():
 	if host:
 		Global.desiredPlayerCount=playerCount
 		peer.create_server(port)
-		print_debug(port)
 	else:
 		peer.create_client(ip,port)
-		print_debug(port)
 	multiplayer.multiplayer_peer=peer
 
 
 func _on_port_value_changed(value):
 	port=value
+	get_node("LevelConfig/VBoxContainer/Port").value=value
+	get_node("JoinLevelConfig/VBoxContainer/Port/SpinBox2").value=value
 
 
 func _on_join_ip_changed(new_text):
 	ip=new_text
+
+
+func _on_back_button_pressed():
+	$LevelConfig.hide()
+	$JoinLevelConfig.hide()
+	$LevelList.show()

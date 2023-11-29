@@ -6,6 +6,7 @@ signal rightClickSignal(index)
 @export var item:ability=null
 var inventory
 var index
+var disabled=false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,6 +25,12 @@ func _gui_input(event):
 				inventory.heldItem=temp
 		elif event.button_index==MOUSE_BUTTON_RIGHT&&event.pressed:
 			rightClickSignal.emit(index)
+			disabled=!disabled
+	if disabled:
+		modulate=Color("#333333")
+	else:
+		modulate=Color("#ffffff")
+
 			
 @rpc("authority", "call_local", "reliable")
 func setItem(_itemname):

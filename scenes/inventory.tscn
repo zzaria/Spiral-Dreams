@@ -28,7 +28,7 @@ layout_mode = 2
 texture = SubResource("GradientTexture2D_hqbuq")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://scenes/abilities/ability.tscn", "res://scenes/abilities/dash.tscn", "res://scenes/abilities/gun.tscn", "res://scenes/abilities/regen_1.tscn", "res://scenes/abilities/regen_2.tscn", "res://scenes/abilities/spiral_gun.tscn", "res://scenes/abilities/teleport.tscn")
+_spawnable_scenes = PackedStringArray("res://scenes/abilities/ability.tscn", "res://scenes/abilities/dash.tscn", "res://scenes/abilities/gun.tscn", "res://scenes/abilities/regen_1.tscn", "res://scenes/abilities/regen_2.tscn", "res://scenes/abilities/teleport.tscn")
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 2

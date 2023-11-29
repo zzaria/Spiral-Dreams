@@ -2,15 +2,16 @@
 
 [ext_resource type="PackedScene" uid="uid://xt22v7a85654" path="res://scenes/abilities/gun.tscn" id="1_k5v0c"]
 [ext_resource type="Script" path="res://scenes/abilities/multishot.gd" id="2_lklug"]
-[ext_resource type="PackedScene" uid="uid://me1och2dblbt" path="res://scenes/projectile_small.tscn" id="3_vu6b0"]
+[ext_resource type="PackedScene" uid="uid://me1och2dblbt" path="res://scenes/projectiles/projectile_small.tscn" id="3_vu6b0"]
 
 [node name="Multishot" instance=ExtResource("1_k5v0c")]
 script = ExtResource("2_lklug")
 spread = 24
 bulletSecondary = ExtResource("3_vu6b0")
-bulletLifespan = 1
+bulletLifespan = 1.0
 cooldown = 0.4
 cost = 30
+abilityType = 1
 
 [node name="Label" parent="." index="1"]
 text = "Multishot"

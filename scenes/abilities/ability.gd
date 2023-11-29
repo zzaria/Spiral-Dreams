@@ -9,7 +9,8 @@ var bearer
 var cooldownTimer=0
 var durationTimer=-1000000
 var autofire=false
-var disabled=false
+var disabled=false #not used
+@export var abilityType=0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,13 +25,22 @@ func updateTimer(delta):
 			doAbilityTimeout()
 
 func attemptAbility(mousePos):
-	if bearer!=null&&!disabled&&cooldownTimer<0&&cost<bearer.energy:
-		doAbility(mousePos)
+	if bearer==null:
+		return
+	if disabled: 
+		return
+	if cooldownTimer>0||cost>bearer.energy||abilityType==1&&bearer.globalAttackCooldown>0:
+		return
+	if abilityType!=0&&bearer.spectator:
+		return	
+	doAbility(mousePos)
 
 func doAbility(mousePos):
 	cooldownTimer=cooldown
 	durationTimer=duration
 	bearer.energy-=cost
+	if abilityType==1:
+		bearer.globalAttackCooldown+=cooldown
 	if cost>0&&bearer.energyTick>-0.3:
 		bearer.energyTick=-0.3
 	

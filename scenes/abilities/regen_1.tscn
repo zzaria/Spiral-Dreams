@@ -5,6 +5,8 @@
 
 [node name="Regen1" instance=ExtResource("1_tf1rn")]
 script = ExtResource("2_8q2wp")
+speed = 1e+06
+acceleration = 500.0
 cooldown = 0.1
 duration = 0.1
 

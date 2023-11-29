@@ -6,6 +6,7 @@ signal quit
 var cam
 var inventory
 var items
+var itemDisabled
 var healthBar
 var energyBar
 var scoreDisplay
@@ -18,10 +19,12 @@ var message
 @export var energy=0
 @export var inventorySize=50
 @export var score=1
+var globalAttackCooldown=0
 var energyTick=0
 var timeSinceHit=0
 var healthEnabled=false
-var spectator=false
+@export var spectator=false
+@export var id=-1
 
 func initPlayer(_team,spawnPoint=Vector2.ZERO):
 	team=_team
@@ -29,7 +32,6 @@ func initPlayer(_team,spawnPoint=Vector2.ZERO):
 	energy=baseMaxEnergy
 	velocity=Vector2.ZERO
 	position=spawnPoint
-	incomingDamage=0
 	spectator=false
 	score=1
 	owner2=self
@@ -40,7 +42,7 @@ func setItem(index,item):
 	items[index]=item
 	if item!=null:
 		item.bearer=self
-	rpc_id(name.to_int(),"setItem_client",index,null if item==null else item.name)
+	rpc_id(id,"setItem_client",index,null if item==null else item.name)
 @rpc("authority", "call_local", "reliable")
 func setItem_client(index,item):
 	var slots=get_node("CanvasLayer/Inventory/GridContainer").get_children()
@@ -65,15 +67,17 @@ func inventorySlotRightClick_client(index):
 	rpc_id(1,"inventorySlotRightClick",index)
 @rpc("any_peer", "call_local","reliable")
 func inventorySlotRightClick(index):
-	if items[index]!=null:
-		items[index].disabled=!items[index].disabled
+	if 0<=index&&index<inventorySize:
+		itemDisabled[index]=!itemDisabled[index]
 
 
 	
 func resetInventory():
 	items=[]
+	itemDisabled=[]
 	for i in range(0,inventorySize):
 		items+=[null]
+		itemDisabled+=[false]
 	var slots=get_node("CanvasLayer/Inventory/GridContainer").get_children()
 	var i=0
 	for item in Global.initialEquip:
@@ -82,11 +86,11 @@ func resetInventory():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	super._ready()
-	initPlayer(name.to_int())
+	initPlayer(id)
 	
 	cam=$Camera2D
-	cam.enabled=multiplayer.get_unique_id()==name.to_int()
-	$CanvasLayer.visible=multiplayer.get_unique_id()==name.to_int()
+	cam.enabled=multiplayer.get_unique_id()==id
+	$CanvasLayer.visible=multiplayer.get_unique_id()==id
 	inventory=get_node("CanvasLayer/Inventory")
 	inventory.itemOwner=self
 	inventory.hide()
@@ -115,15 +119,20 @@ func afsdlknj():
 	var i=0
 	for item in items:
 		if item!=null:
-			rpc_id(name.to_int(),"setItem_client",i,item.name)
+			rpc_id(id,"setItem_client",i,item.name)
 		i+=1
 
 func _enter_tree():
-	pass
+	pass 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	super._process(delta)
+	if spectator&&multiplayer.get_unique_id()!=id:
+		self.hide()
+	else:
+		self.show()
+
 	if velocity.length()>0.01:
 		$AnimatedSprite2D.play()
 	else:
@@ -144,19 +153,23 @@ func _process(delta):
 	energyBar.get_node("Label").text="Energy: "+str(round(energy))
 	scoreDisplay.get_node("Label").text="Score: "+str(round(score))
 
-	if multiplayer.get_unique_id()!=name.to_int():
+	if multiplayer.get_unique_id()!=id:
 		return
 	doAbilities()
 	doMovement(delta)
 		
 func _physics_process2(delta):
+	var i=0
 	for item in items:
-		if item!=null:
+		if item!=null&&!itemDisabled[i]:
 			item.updateTimer(delta)
 			item.tryEffect()
+		i+=1
 	timeSinceHit+=delta
 	
 	energyTick+=delta
+	if globalAttackCooldown>=-2:
+		globalAttackCooldown-=delta
 	while energyTick>0:
 		var secondsTofull=3
 		var energyTickDelay=0.1
@@ -174,8 +187,6 @@ func resetStats():
 	maxEnergy=baseMaxEnergy
 
 func doAbilities():
-	if spectator:
-		return
 	var useSlots=[]
 	var toggleSlots=[]
 	for i in range(1,6):
@@ -187,29 +198,27 @@ func doAbilities():
 		rpc_id(1,"doAbilitiesServer",get_local_mouse_position(),useSlots,toggleSlots)
 
 @rpc("any_peer", "call_local") func doAbilitiesServer(mousePos,useSlots,toggleSlots):
-	var id=multiplayer.get_remote_sender_id()
-	if id!=name.to_int():
+	if id!=multiplayer.get_remote_sender_id():
 		return
 	if !is_multiplayer_authority():
-		return
-	if spectator:
 		return
 	for i in toggleSlots:
 		if items[i]!=null:
 			items[i].toggle()
 	for i in useSlots:
-		if items[i]!=null:
+		if items[i]!=null&&!itemDisabled[i]:
 			items[i].attemptAbility(mousePos)
+	var i=0
 	for item in items:
-		if item!=null&&item.autofire:
+		if item!=null&&item.autofire&&!itemDisabled[i]:
 			item.attemptAbility(mousePos)
+		i+=1
 
 func doMovement(delta):
 	rpc_id(1,"doMovementServer",delta,Input.get_vector("move_left","move_right","move_up","move_down"))
 
 @rpc("any_peer", "call_local") func doMovementServer(delta,inputDir):
-	var id=multiplayer.get_remote_sender_id()
-	if id!=name.to_int():
+	if id!=multiplayer.get_remote_sender_id():
 		return
 	if !is_multiplayer_authority():
 		return
@@ -220,7 +229,7 @@ func doMovement(delta):
 
 
 func _input(event):
-	if multiplayer.get_unique_id()!=name.to_int():
+	if multiplayer.get_unique_id()!=id:
 		return
 	if event.is_action_pressed("inventory"):
 		inventory.visible=!inventory.visible
@@ -232,12 +241,13 @@ func takeDamage(d,source=null):
 		return
 	if timeSinceHit<maxImmunity:
 		return
-	if d>=health:
+	super.takeDamage(d)
+	timeSinceHit=0
+	if health<0&&!spectator:
 		if source!=null:
 			source.onKill(self)
 		score=0
-	super.takeDamage(d)
-	timeSinceHit=0
+		die()
 func onKill(victim):
 	score+=victim.score
 	energy+=maxEnergy/2
@@ -246,13 +256,13 @@ func onKill(victim):
 func die():
 	spectator=true
 	$CollisionShape2D.disabled=true
-	rpc_id(name.to_int(),"die_client")
+	rpc_id(id,"die_client")
 @rpc("authority", "call_local", "reliable")
 func die_client():
 	get_node("CanvasLayer/DeathScreen").show()
 
 func show_message(text):
-	rpc_id(name.to_int(),"show_message_client",text)
+	rpc_id(id,"show_message_client",text)
 
 @rpc("authority", "call_local", "reliable")
 func show_message_client(text):
@@ -264,19 +274,21 @@ func show_message_client(text):
 
 func _on_respawn_pressed():
 	rpc_id(1,"_on_respawn_pressed_server")
+	get_node("CanvasLayer/DeathScreen").hide()
+	
 @rpc("any_peer", "call_local") func _on_respawn_pressed_server():
-	var id=multiplayer.get_remote_sender_id()
-	if id!=name.to_int() || !is_multiplayer_authority():
+	if id!=multiplayer.get_remote_sender_id() || !is_multiplayer_authority():
 		return
-	respawn.emit(id)
+	respawn.emit(self)
 
 func _on_quit_pressed():
-	rpc_id(1,"_on_quit_pressed_server")
+	#rpc_id(1,"_on_quit_pressed_server")
 	multiplayer.multiplayer_peer=null
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
 @rpc("any_peer", "call_local") func _on_quit_pressed_server():
-	var id=multiplayer.get_remote_sender_id()
-	if id!=name.to_int() || !is_multiplayer_authority():
+	pass
+	if multiplayer.get_remote_sender_id()!=id || !is_multiplayer_authority():
 		return
 	quit.emit(id)
 	

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://csmgjl6hma4un"]
+
+[ext_resource type="PackedScene" uid="uid://bydot2u226dh8" path="res://scenes/abilities/regen_1.tscn" id="1_ho0i7"]
+[ext_resource type="Script" path="res://scenes/abilities/regen1.gd" id="2_ix8ug"]
+
+[node name="Regen3" instance=ExtResource("1_ho0i7")]
+script = ExtResource("2_ix8ug")
+speed = 10.0
+acceleration = 1e+09
+
+[node name="Label" parent="." index="1"]
+text = "Regen 3"

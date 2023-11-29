@@ -10,6 +10,7 @@ bullet = ExtResource("2_rh7sg")
 bulletLifespan = 5
 damage = 4
 cooldown = 0.2
+abilityType = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(26, 29)
