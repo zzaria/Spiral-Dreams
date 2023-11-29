@@ -43,10 +43,8 @@ func _ready():
 			Global.initialEquip+=[load(itemsPath+equip[i]).instantiate()]
 		i+=1
 	var itemList=getItems()
-	print_debug(equip)
 	for item in itemList:
 		Global.itemList+=[load(itemsPath+item).instantiate()]
-		print_debug(item," ",item in equip)
 		if item in equip:
 			continue
 		Global.initialEquip+=[load(itemsPath+item).instantiate()]

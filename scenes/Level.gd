@@ -1,8 +1,6 @@
 extends Node2D
 
 @export var player_scene:PackedScene
-@onready var cam=$Camera2D;
-var peer = ENetMultiplayerPeer.new();
 var initialEquip
 var players=[]
 var levelStarted=false
@@ -12,6 +10,14 @@ func _ready():
 		multiplayer.peer_connected.connect(add_player)
 		multiplayer.peer_disconnected.connect(disconnect_player)
 		add_player()
+	else:
+		multiplayer.peer_disconnected.connect(host_disconnected)
+
+
+func host_disconnected(id):
+	if id==1:
+		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+		return
 
 func add_player(id=1):
 	print_debug("New player ",id)
@@ -47,7 +53,6 @@ func start_game():
 		player.show_message(null)
 
 func disconnect_player(id):
-	print_debug("aaa",id)
 	for player in players:
 		if player.id==id:
 			var timer=Timer.new()

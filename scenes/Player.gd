@@ -1,7 +1,6 @@
 class_name Player
 extends Projectile
 signal respawn
-signal quit
 
 var cam
 var inventory
@@ -282,15 +281,9 @@ func _on_respawn_pressed():
 	respawn.emit(self)
 
 func _on_quit_pressed():
-	#rpc_id(1,"_on_quit_pressed_server")
 	multiplayer.multiplayer_peer=null
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
-@rpc("any_peer", "call_local") func _on_quit_pressed_server():
-	pass
-	if multiplayer.get_remote_sender_id()!=id || !is_multiplayer_authority():
-		return
-	quit.emit(id)
 	
 func server_disconnected(): #doesn't work
 	pass
