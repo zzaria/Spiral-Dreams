@@ -1,6 +1,9 @@
 class_name Player
 extends Projectile
 signal respawn
+signal requestjointeamsignal
+signal acceptteamrequestsignal
+signal startgamesignal
 
 var cam
 var inventory
@@ -11,6 +14,7 @@ var energyBar
 var scoreDisplay
 var messageBox
 var message
+var nametag
 
 @export var maxImmunity =0
 @export var baseMaxEnergy=1000
@@ -24,6 +28,9 @@ var timeSinceHit=0
 var healthEnabled=false
 @export var spectator=false
 @export var id=-1
+var dashing=false
+@export var username=""
+var teamRequests=[]
 
 func initPlayer(_team,spawnPoint=Vector2.ZERO):
 	team=_team
@@ -44,7 +51,7 @@ func setItem(index,item):
 	rpc_id(id,"setItem_client",index,null if item==null else item.name)
 @rpc("authority", "call_local", "reliable")
 func setItem_client(index,item):
-	var slots=get_node("CanvasLayer/Inventory/GridContainer").get_children()
+	var slots=get_node("CanvasLayer/InventoryScreen/Inventory/GridContainer").get_children()
 	if not slots:
 		return
 	slots[index].setItem(item)
@@ -56,7 +63,9 @@ func inventoryDrop(index):
 	curDragItem=null
 @rpc("any_peer", "call_local")
 func inventorySwap(x,y):
-	if !is_multiplayer_authority()||y==null||x==null||0>x||x>=inventorySize||0>y||y>=inventorySize:
+	if id!=multiplayer.get_remote_sender_id()||!is_multiplayer_authority():
+		return
+	if y==null||x==null||0>x||x>=inventorySize||0>y||y>=inventorySize:
 		return
 	var ix=items[x]
 	var iy=items[y]
@@ -66,6 +75,8 @@ func inventorySlotRightClick_client(index):
 	rpc_id(1,"inventorySlotRightClick",index)
 @rpc("any_peer", "call_local","reliable")
 func inventorySlotRightClick(index):
+	if id!=multiplayer.get_remote_sender_id()||!is_multiplayer_authority():
+		return
 	if 0<=index&&index<inventorySize:
 		itemDisabled[index]=!itemDisabled[index]
 
@@ -77,43 +88,53 @@ func resetInventory():
 	for i in range(0,inventorySize):
 		items+=[null]
 		itemDisabled+=[false]
-	var slots=get_node("CanvasLayer/Inventory/GridContainer").get_children()
+	var slots=get_node("CanvasLayer/InventoryScreen/Inventory/GridContainer").get_children()
 	var i=0
 	for item in Global.initialEquip:
 		setItem(i,item.duplicate())
 		i+=1
+@rpc("any_peer", "call_local","reliable")
+func setUsername(text):
+	if id!=multiplayer.get_remote_sender_id()||!is_multiplayer_authority():
+		return
+	text=text.substr(0,25)
+	username=text
+		
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	super._ready()
-	initPlayer(id)
 	
 	cam=$Camera2D
 	cam.enabled=multiplayer.get_unique_id()==id
 	$CanvasLayer.visible=multiplayer.get_unique_id()==id
-	inventory=get_node("CanvasLayer/Inventory")
-	inventory.itemOwner=self
-	inventory.hide()
-	
-	healthBar=get_node("CanvasLayer/HealthBar")
-	energyBar=get_node("CanvasLayer/EnergyBar")
-	scoreDisplay=get_node("CanvasLayer/ScoreDisplay")
-	messageBox=get_node("CanvasLayer/MessageBox")
-	message=get_node("CanvasLayer/MessageBox/CenterContainer/Panel/PanelContainer/Label")
-	var slots=get_node("CanvasLayer/Inventory/GridContainer").get_children()
-	var i=0
-	for slot in slots:
-		slot.index=i
-		slot.dragSignal.connect(inventoryDrag)
-		slot.dropSignal.connect(inventoryDrop)
-		slot.rightClickSignal.connect(inventorySlotRightClick_client)
-		i+=1
+	if multiplayer.get_unique_id()==id:
+		setUsername.rpc_id(1,Global.username)
+		inventory=get_node("CanvasLayer/InventoryScreen/Inventory")
+		inventory.itemOwner=self
+		
+		healthBar=get_node("CanvasLayer/HealthBar")
+		energyBar=get_node("CanvasLayer/EnergyBar")
+		scoreDisplay=get_node("CanvasLayer/ScoreDisplay")
+		messageBox=get_node("CanvasLayer/MessageBox")
+		message=get_node("CanvasLayer/MessageBox/CenterContainer/Panel/PanelContainer/Label")
+		var slots=get_node("CanvasLayer/InventoryScreen/Inventory/GridContainer").get_children()
+		var i=0
+		for slot in slots:
+			slot.index=i
+			slot.dragSignal.connect(inventoryDrag)
+			slot.dropSignal.connect(inventoryDrop)
+			slot.rightClickSignal.connect(inventorySlotRightClick_client)
+			i+=1
+		if !is_multiplayer_authority():
+			get_node("CanvasLayer/InventoryScreen/Control").hide()
 	if is_multiplayer_authority():
 		var timer = Timer.new()
 		timer.connect("timeout",afsdlknj) 
 		timer.set_one_shot(true)
-		timer.set_wait_time(1)
+		timer.set_wait_time(1) #bruh
 		add_child(timer) 
 		timer.start() 
+	nametag=get_node("Nametag")
 func afsdlknj():
 	var i=0
 	for item in items:
@@ -131,6 +152,7 @@ func _process(delta):
 		self.hide()
 	else:
 		self.show()
+	nametag.text=str(team)+"-"+str(id)+"\n"+username
 
 	if velocity.length()>0.01:
 		$AnimatedSprite2D.play()
@@ -144,6 +166,9 @@ func _process(delta):
 		$AnimatedSprite2D.animation = "up"
 		$AnimatedSprite2D.flip_v = velocity.y > 0
 	
+	if multiplayer.get_unique_id()!=id:
+		return
+	
 	healthBar.max_value=maxHealth
 	healthBar.value=health
 	healthBar.get_node("Label").text="Health: "+str(round(health))
@@ -152,8 +177,6 @@ func _process(delta):
 	energyBar.get_node("Label").text="Energy: "+str(round(energy))
 	scoreDisplay.get_node("Label").text="Score: "+str(round(score))
 
-	if multiplayer.get_unique_id()!=id:
-		return
 	doAbilities()
 	doMovement(delta)
 		
@@ -197,9 +220,7 @@ func doAbilities():
 		rpc_id(1,"doAbilitiesServer",get_local_mouse_position(),useSlots,toggleSlots)
 
 @rpc("any_peer", "call_local") func doAbilitiesServer(mousePos,useSlots,toggleSlots):
-	if id!=multiplayer.get_remote_sender_id():
-		return
-	if !is_multiplayer_authority():
+	if id!=multiplayer.get_remote_sender_id()||!is_multiplayer_authority():
 		return
 	for i in toggleSlots:
 		if items[i]!=null:
@@ -217,9 +238,7 @@ func doMovement(delta):
 	rpc_id(1,"doMovementServer",delta,Input.get_vector("move_left","move_right","move_up","move_down"))
 
 @rpc("any_peer", "call_local") func doMovementServer(delta,inputDir):
-	if id!=multiplayer.get_remote_sender_id():
-		return
-	if !is_multiplayer_authority():
+	if id!=multiplayer.get_remote_sender_id()||!is_multiplayer_authority():
 		return
 	accelerationDir=inputDir
 	
@@ -231,7 +250,7 @@ func _input(event):
 	if multiplayer.get_unique_id()!=id:
 		return
 	if event.is_action_pressed("inventory"):
-		inventory.visible=!inventory.visible
+		get_node("CanvasLayer/InventoryScreen").visible=!get_node("CanvasLayer/InventoryScreen").visible
 		
 func _on_area_entered(area):
 	super._on_area_entered(area)
@@ -281,9 +300,55 @@ func _on_respawn_pressed():
 	respawn.emit(self)
 
 func _on_quit_pressed():
+	teamRequests=[]
 	multiplayer.multiplayer_peer=null
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
+
+func _on_line_edit_text_submitted(new_text):
+	requestjointeam.rpc_id(1,new_text.to_int())
+	get_node("CanvasLayer/InventoryScreen/LineEdit").text=""
+@rpc("any_peer", "call_local") func requestjointeam(team):
+	if id!=multiplayer.get_remote_sender_id() || !is_multiplayer_authority():
+		return
+	requestjointeamsignal.emit(id,team)
+
+@rpc("authority", "call_local", "reliable") func showteamrequest(id,name):
+	teamRequests+=[[id,name]]
+	get_node("CanvasLayer/TeamRequests").show()
+	get_node("CanvasLayer/TeamRequests/VBoxContainer/Label").text="Add to team"+name+" "+str(id)+"?"
+
+
+
+func _on_button_pressed():
+	acceptteamrequest.rpc_id(1,teamRequests[0][0])
+	teamRequests.remove_at(0)
+	if teamRequests.size()==0:
+		get_node("CanvasLayer/TeamRequests").hide()
+@rpc("any_peer", "call_local") func acceptteamrequest(x):
+	if id!=multiplayer.get_remote_sender_id() || !is_multiplayer_authority():
+		return
+	acceptteamrequestsignal.emit(x,id)
 	
-func server_disconnected(): #doesn't work
-	pass
+
+
+
+
+func _on_button_2_pressed():
+	teamRequests.remove_at(0)
+	if teamRequests.size()==0:
+		get_node("CanvasLayer/TeamRequests").hide()
+
+
+func _on_line_edit_2_text_changed(new_text):
+	Global.password=new_text
+
+func startgame():
+	startgamesignal.emit()
+
+@rpc("authority","call_local","reliable")
+func setAllowedActions(team,respawn,levelStarted):
+	get_node("CanvasLayer/DeathScreen/PanelContainer/VBoxContainer/CenterContainer/HBoxContainer/Respawn").visible=respawn
+	get_node("CanvasLayer/InventoryScreen/LineEdit").visible=team
+	get_node("CanvasLayer/InventoryScreen/Control/BoxContainer/Button").text="End game" if levelStarted else "Start game"
+	

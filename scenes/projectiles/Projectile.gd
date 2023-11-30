@@ -4,7 +4,7 @@ extends Area2D
 
 @export var damage = 1 
 @export var maxHealth = 10 
-var team
+@export var team=0
 var owner2
 @export var health = 0
 var velocity

@@ -43,6 +43,11 @@ theme_override_constants/margin_bottom = 0
 [node name="LevelType" type="GridContainer" parent="LevelList"]
 layout_mode = 2
 
+[node name="Username" type="LineEdit" parent="LevelList/LevelType"]
+layout_mode = 2
+placeholder_text = "name"
+max_length = 25
+
 [node name="Host" type="Button" parent="LevelList/LevelType"]
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
@@ -73,6 +78,16 @@ layout_mode = 2
 [node name="BackButton" type="Button" parent="JoinLevelConfig/VBoxContainer"]
 layout_mode = 2
 text = "Back"
+
+[node name="Password" type="HSplitContainer" parent="JoinLevelConfig/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="JoinLevelConfig/VBoxContainer/Password"]
+layout_mode = 2
+text = "Password"
+
+[node name="LineEdit" type="LineEdit" parent="JoinLevelConfig/VBoxContainer/Password"]
+layout_mode = 2
 
 [node name="Ip" type="HSplitContainer" parent="JoinLevelConfig/VBoxContainer"]
 layout_mode = 2
@@ -129,6 +144,7 @@ text = "Number of players"
 [node name="HSlider" type="HSlider" parent="LevelConfig/VBoxContainer"]
 layout_mode = 2
 min_value = 1.0
+max_value = 200.0
 value = 2.0
 exp_edit = true
 rounded = true
@@ -136,10 +152,56 @@ rounded = true
 [node name="SpinBox" type="SpinBox" parent="LevelConfig/VBoxContainer"]
 layout_mode = 2
 min_value = 1.0
+max_value = 200.0
 value = 2.0
 rounded = true
 
 [node name="Label2" type="Label" parent="LevelConfig/VBoxContainer"]
+layout_mode = 2
+text = "Max team size"
+
+[node name="SpinBox2" type="SpinBox" parent="LevelConfig/VBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+rounded = true
+allow_greater = true
+
+[node name="Label3" type="Label" parent="LevelConfig/VBoxContainer"]
+layout_mode = 2
+text = "Choose teams"
+
+[node name="ItemList" type="ItemList" parent="LevelConfig/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+auto_height = true
+item_count = 2
+max_columns = 2
+item_0/text = "On"
+item_1/text = "Off"
+
+[node name="Label5" type="Label" parent="LevelConfig/VBoxContainer"]
+layout_mode = 2
+text = "During game"
+
+[node name="ItemList2" type="ItemList" parent="LevelConfig/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+auto_height = true
+item_count = 3
+max_columns = 2
+item_0/text = "Free"
+item_1/text = "Lock teams"
+item_2/text = "No respawn, lock teams"
+
+[node name="Label4" type="Label" parent="LevelConfig/VBoxContainer"]
+layout_mode = 2
+text = "Password"
+
+[node name="LineEdit" type="LineEdit" parent="LevelConfig/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelPort" type="Label" parent="LevelConfig/VBoxContainer"]
 layout_mode = 2
 text = "Network Port"
 
@@ -791,14 +853,20 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_1imx7")
 script = ExtResource("2_8pxih")
 
+[connection signal="text_changed" from="LevelList/LevelType/Username" to="." method="_on_username_text_changed"]
 [connection signal="pressed" from="LevelList/LevelType/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="LevelList/LevelType/Join" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="JoinLevelConfig/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="text_changed" from="JoinLevelConfig/VBoxContainer/Password/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="text_changed" from="JoinLevelConfig/VBoxContainer/Ip/LineEdit" to="." method="_on_join_ip_changed"]
 [connection signal="value_changed" from="JoinLevelConfig/VBoxContainer/Port/SpinBox2" to="." method="_on_port_value_changed"]
 [connection signal="pressed" from="JoinLevelConfig/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="LevelConfig/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="value_changed" from="LevelConfig/VBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="value_changed" from="LevelConfig/VBoxContainer/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="value_changed" from="LevelConfig/VBoxContainer/SpinBox2" to="." method="_on_spin_box_2_value_changed"]
+[connection signal="item_selected" from="LevelConfig/VBoxContainer/ItemList" to="." method="_on_item_list_item_selected"]
+[connection signal="item_selected" from="LevelConfig/VBoxContainer/ItemList2" to="." method="_on_item_list_2_item_selected"]
+[connection signal="text_changed" from="LevelConfig/VBoxContainer/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="value_changed" from="LevelConfig/VBoxContainer/Port" to="." method="_on_port_value_changed"]
 [connection signal="pressed" from="LevelConfig/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]

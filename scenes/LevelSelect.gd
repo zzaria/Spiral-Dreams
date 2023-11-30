@@ -2,7 +2,6 @@ extends Control
 
 var peer = ENetMultiplayerPeer.new();
 var host=false
-var playerCount=2
 var ip="127.0.0.1"
 var port=212
 var equip=[]
@@ -35,6 +34,9 @@ func _ready():
 	equip[10]="regen_2"
 	Global.initialEquip=[]
 	Global.itemList=[]
+	Global.username=""
+	Global.teamAndRespawnDuringGame=0
+	Global.chooseTeams=true
 	
 	var i=0	
 	for slot in get_node("LevelConfig/CenterContainer/Inventory/DefaultInventory/GridContainer").get_children():
@@ -50,12 +52,12 @@ func _ready():
 		Global.initialEquip+=[load(itemsPath+item).instantiate()]
 
 func _on_h_slider_value_changed(value):
-	playerCount=value
+	Global.desiredPlayerCount=value
 	get_node("LevelConfig/VBoxContainer/SpinBox").value=value
 
 
 func _on_spin_box_value_changed(value):
-	playerCount=value
+	Global.desiredPlayerCount=value
 	get_node("LevelConfig/VBoxContainer/HSlider").value=value
 
 func _on_host_pressed():
@@ -72,13 +74,15 @@ func _on_join_pressed():
 
 
 func _on_start_button_pressed():
-	get_tree().change_scene_to_file("res://scenes/Level.tscn")
+	var e
 	if host:
-		Global.desiredPlayerCount=playerCount
-		peer.create_server(port)
+		e=peer.create_server(port)
 	else:
-		peer.create_client(ip,port)
+		e=peer.create_client(ip,port)
+	if e!=OK:
+		return
 	multiplayer.multiplayer_peer=peer
+	get_tree().change_scene_to_file("res://scenes/Level.tscn")
 
 
 func _on_port_value_changed(value):
@@ -95,3 +99,23 @@ func _on_back_button_pressed():
 	$LevelConfig.hide()
 	$JoinLevelConfig.hide()
 	$LevelList.show()
+
+
+func _on_spin_box_2_value_changed(value):
+	Global.teamSize=value
+	
+
+
+func _on_username_text_changed(new_text):
+	Global.username=new_text
+
+func _on_item_list_item_selected(index):
+	Global.chooseTeams=index==0
+func _on_item_list_2_item_selected(index):
+	Global.teamAndRespawnDuringGame=index
+
+
+func _on_line_edit_text_changed(new_text):
+	Global.password=new_text
+
+

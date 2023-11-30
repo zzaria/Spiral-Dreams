@@ -69,6 +69,14 @@ properties/7/path = NodePath(".:spectator")
 properties/7/spawn = true
 properties/7/sync = true
 properties/7/watch = false
+properties/8/path = NodePath(".:username")
+properties/8/spawn = true
+properties/8/sync = true
+properties/8/watch = false
+properties/9/path = NodePath(".:team")
+properties/9/spawn = true
+properties/9/sync = true
+properties/9/watch = false
 
 [node name="Player" type="Area2D" groups=["player"]]
 collision_mask = 3
@@ -89,15 +97,6 @@ animation = &"up"
 shape = SubResource("CapsuleShape2D_6vtl0")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Inventory" parent="CanvasLayer" instance=ExtResource("6_g4rmu")]
-visible = false
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -546.0
-offset_bottom = 276.0
-grow_horizontal = 0
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer"]
 offset_left = 2.0
@@ -140,12 +139,33 @@ offset_bottom = 26.0
 text = "Score
 "
 
-[node name="Quit" type="Button" parent="CanvasLayer"]
-offset_left = 264.0
-offset_top = 1.0
-offset_right = 315.0
-offset_bottom = 32.0
-text = "Quit"
+[node name="TeamRequests" type="Panel" parent="CanvasLayer"]
+visible = false
+offset_left = 986.0
+offset_top = 8.0
+offset_right = 1144.0
+offset_bottom = 75.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/TeamRequests"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="CanvasLayer/TeamRequests/VBoxContainer"]
+layout_mode = 2
+text = "Add player to team?"
+autowrap_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/TeamRequests/VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/TeamRequests/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Accept"
+
+[node name="Button2" type="Button" parent="CanvasLayer/TeamRequests/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Reject"
 
 [node name="DeathScreen" type="MarginContainer" parent="CanvasLayer"]
 visible = false
@@ -186,6 +206,61 @@ text = "Respawn"
 layout_mode = 2
 text = "Quit"
 
+[node name="InventoryScreen" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Inventory" parent="CanvasLayer/InventoryScreen" instance=ExtResource("6_g4rmu")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 566.0
+offset_right = 1112.0
+offset_bottom = 276.0
+grow_horizontal = 0
+
+[node name="Quit" type="Button" parent="CanvasLayer/InventoryScreen"]
+layout_mode = 0
+offset_left = 264.0
+offset_top = 1.0
+offset_right = 315.0
+offset_bottom = 32.0
+text = "Quit"
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/InventoryScreen"]
+layout_mode = 0
+offset_left = 327.0
+offset_top = 1.0
+offset_right = 410.0
+offset_bottom = 32.0
+placeholder_text = "join team"
+expand_to_text_length = true
+
+[node name="Control" type="Control" parent="CanvasLayer/InventoryScreen"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/InventoryScreen/Control"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 63.0
+offset_right = 169.0
+offset_bottom = 103.0
+
+[node name="LineEdit2" type="LineEdit" parent="CanvasLayer/InventoryScreen/Control/BoxContainer"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+placeholder_text = "New Password"
+
+[node name="Button" type="Button" parent="CanvasLayer/InventoryScreen/Control/BoxContainer"]
+layout_mode = 2
+text = "Start game"
+
 [node name="MessageBox" type="MarginContainer" parent="CanvasLayer"]
 visible = false
 anchors_preset = 15
@@ -216,8 +291,30 @@ text = "Level Starting"
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_mgwfn")
 
+[node name="Nametag" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.5
+offset_top = -60.0
+offset_right = 24.5
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 0
+text = "Player"
+horizontal_alignment = 1
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
-[connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="CanvasLayer/TeamRequests/VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TeamRequests/VBoxContainer/HBoxContainer/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="CanvasLayer/DeathScreen/PanelContainer/VBoxContainer/CenterContainer/HBoxContainer/Respawn" to="." method="_on_respawn_pressed"]
 [connection signal="pressed" from="CanvasLayer/DeathScreen/PanelContainer/VBoxContainer/CenterContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="CanvasLayer/InventoryScreen/Quit" to="." method="_on_quit_pressed"]
+[connection signal="text_submitted" from="CanvasLayer/InventoryScreen/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="text_changed" from="CanvasLayer/InventoryScreen/Control/BoxContainer/LineEdit2" to="." method="_on_line_edit_2_text_changed"]
+[connection signal="pressed" from="CanvasLayer/InventoryScreen/Control/BoxContainer/Button" to="." method="startgame"]
