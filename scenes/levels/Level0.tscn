@@ -34,7 +34,7 @@ texture = ExtResource("3_2efsq")
 position = Vector2(240, 540)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://scenes/Player.tscn", "res://scenes/projectiles/Projectile.tscn", "res://scenes/projectiles/projectile_small.tscn", "res://scenes/projectiles/interceptor.tscn", "res://scenes/projectiles/Missile.tscn", "res://scenes/projectiles/MissileMagic.tscn", "res://scenes/projectiles/Explosion.tscn")
+_spawnable_scenes = PackedStringArray("res://scenes/Player.tscn", "res://scenes/projectiles/Projectile.tscn", "res://scenes/projectiles/projectile_small.tscn", "res://scenes/projectiles/interceptor.tscn", "res://scenes/projectiles/Missile.tscn", "res://scenes/projectiles/MissileMagic.tscn", "res://scenes/projectiles/Explosion.tscn", "res://scenes/projectiles/RailgunBullet.tscn")
 spawn_path = NodePath("..")
 
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

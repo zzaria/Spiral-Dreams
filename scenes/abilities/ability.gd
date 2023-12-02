@@ -30,9 +30,9 @@ func attemptAbility(mousePos):
 		return
 	if disabled: 
 		return
-	if cooldownTimer>0||cost>bearer.energy||abilityType==1&&bearer.globalAttackCooldown>0:
-		return
 	if abilityType!=0&&bearer.spectator:
+		return
+	if cooldownTimer>0||cost>bearer.energy||abilityType==1&&bearer.globalAttackCooldown>0:
 		return
 	if clampMouse&&mousePos!=null:
 		mousePos=mousePos.clamp(-Global.VIEWPORT_SIZE/2,Global.VIEWPORT_SIZE/2)

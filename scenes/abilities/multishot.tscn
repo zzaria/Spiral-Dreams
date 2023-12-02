@@ -8,10 +8,9 @@
 script = ExtResource("2_lklug")
 spread = 24
 bulletSecondary = ExtResource("3_vu6b0")
-bulletLifespan = 1.0
+bulletLifespan = 3.0
 cooldown = 0.4
 cost = 30
-abilityType = 1
 
 [node name="Label" parent="." index="1"]
 text = "Multishot"
