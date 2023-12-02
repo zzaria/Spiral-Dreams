@@ -1,9 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://ecglalns8jkw"]
+[gd_scene load_steps=5 format=3 uid="uid://c8cd5mq8fstu5"]
 
-[ext_resource type="Script" path="res://scenes/projectiles/Missile.gd" id="1_2tltq"]
+[ext_resource type="Script" path="res://scenes/projectiles/MissileMagic.gd" id="1_tc1gm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8qvnm"]
-radius = 8.0
+radius = 5.09902
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mgwfn"]
 properties/0/path = NodePath(".:position")
@@ -12,15 +12,11 @@ properties/0/sync = true
 properties/0/watch = false
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b001a"]
-radius = 10000.2
+radius = 1046.02
 
-[node name="Missile" type="Area2D"]
-collision_layer = 6
-collision_mask = 9
-script = ExtResource("1_2tltq")
-health = 2
-baseAcceleration = 1500
-baseSpeed = 1500
+[node name="MissileMagic" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_tc1gm")
 metadata/_edit_group_ = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -29,10 +25,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -15.0
-offset_top = -15.0
-offset_right = 15.0
-offset_bottom = 15.0
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)

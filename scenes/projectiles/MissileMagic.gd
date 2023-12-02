@@ -1,25 +1,30 @@
 extends Projectile
-var explosion=load("res://scenes/projectiles/Explosion.tscn")
 
 var target
 var targetPos
 var autoTarget
 var pattern=0
-func init2(_pattern,pos,_speed,_acceleration,_autoTarget=false):
+var startupDuration
+func init2(_pattern,pos,_speed,_acceleration,_autoTarget=false,_startupDuration=0):
 	pattern=_pattern
 	baseSpeed=_speed
 	baseAcceleration=_acceleration
 	targetPos=pos
 	autoTarget=_autoTarget
+	startupDuration=_startupDuration
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
+func _physics_process2(delta):
 	if !is_multiplayer_authority():
 		return
+
 	if target:
 		targetPos=target.position
-	if (targetPos-position).length()<50:
-		lifeSpan=0
+	if startupDuration>0||autoTarget&&!target:
+		startupDuration-=delta
+		targetPos=owner2.position
+		acceleration=2000
+		speed=600
 	if pattern==0:  #naive strategy
 		accelerationDir=targetPos-position
 	elif pattern==1:
@@ -28,13 +33,6 @@ func _physics_process(delta):
 			accelerationDir=targetPos-position
 	accelerationDir=accelerationDir.normalized()
 	super(delta)
-func die():
-	var e=explosion.instantiate()
-	e.init(position,Vector2.ZERO,owner2,team,0.2,damage,1000)
-	e.name=str(randi())+"e"
-	self.get_tree().get_nodes_in_group("level")[0].add_child(e)
-	super()
-
 
 
 func _on_targeting_area_entered(area):
@@ -45,7 +43,4 @@ func _on_targeting_area_entered(area):
 	if !area.get_groups().has("player")||team==area.get("team"):
 		return
 	target=area
-func takeDamage(a,b=null):
-	print_debug(health,a)
-	super(a,b)
 	

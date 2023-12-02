@@ -1,4 +1,4 @@
-extends Control
+extends Level_Base
 
 var peer = ENetMultiplayerPeer.new();
 var host=false
@@ -6,6 +6,7 @@ var ip="127.0.0.1"
 var port=212
 var equip=[]
 var itemsPath="res://scenes/abilities/"
+var level=0
 @export var player_scene:PackedScene
 
 func getItems():
@@ -82,7 +83,9 @@ func _on_start_button_pressed():
 	if e!=OK:
 		return
 	multiplayer.multiplayer_peer=peer
-	get_tree().change_scene_to_file("res://scenes/Level.tscn")
+	startMultiplayer.emit()
+	changeLevel.emit("Level"+str(level))
+	
 
 
 func _on_port_value_changed(value):
@@ -119,3 +122,15 @@ func _on_line_edit_text_changed(new_text):
 	Global.password=new_text
 
 
+
+
+func _on_item_list_3_item_selected(index):
+	Global.assignTeams=index==0
+
+
+func _on_item_list_4_item_selected(index):
+	Global.teamSizeRule=index
+
+
+func _on_item_list_5_item_selected(index):
+	level=index

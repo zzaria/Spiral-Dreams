@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://duq72j3q13qom"]
+[gd_scene load_steps=4 format=3 uid="uid://cldpom8axputx"]
 
 [ext_resource type="Script" path="res://scenes/abilities/HomingMissile.gd" id="1_mkni4"]
 [ext_resource type="PackedScene" uid="uid://ecglalns8jkw" path="res://scenes/projectiles/Missile.tscn" id="2_kl1u5"]
@@ -6,12 +6,12 @@
 
 [node name="HomingMissile" type="Node2D"]
 script = ExtResource("1_mkni4")
+acceleration = 2000
+pattern = 1
 bullet = ExtResource("2_kl1u5")
-bulletSpeed = 0
-bulletHealth = 1
+bulletSpeed = 1500
 bulletLifespan = 5.0
 damage = 5.0
-abilityType = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(26, 29)

@@ -15,12 +15,17 @@ var scoreDisplay
 var messageBox
 var message
 var nametag
+@export var zoomEnabled=false #can easily be bypassed
+var zoomLevel=0
 
 @export var maxImmunity =0
 @export var baseMaxEnergy=1000
 @export var maxEnergy=0
 @export var energy=0
-@export var inventorySize=50
+const inventorySize=50
+const inventoryRows=5
+const inventoryColumns=10
+var hotbarRow=0
 @export var score=1
 var globalAttackCooldown=0
 var energyTick=0
@@ -41,6 +46,7 @@ func initPlayer(_team,spawnPoint=Vector2.ZERO):
 	spectator=false
 	score=1
 	owner2=self
+	zoomLevel=0
 	$CollisionShape2D.disabled=false
 func setItem(index,item):
 	if index>=inventorySize:
@@ -177,6 +183,19 @@ func _process(delta):
 	energyBar.get_node("Label").text="Energy: "+str(round(energy))
 	scoreDisplay.get_node("Label").text="Score: "+str(round(score))
 
+	for i in range(inventoryRows):
+		if Input.is_action_pressed("hotbar"+str(i+1)):
+			hotbarRow=i
+	if Input.is_action_just_pressed("zoom_in"):
+		zoomLevel+=1
+	if Input.is_action_just_pressed("zoom_out"):
+		zoomLevel-=1
+	if !zoomEnabled:
+		zoomLevel=0
+	zoomLevel=clamp(zoomLevel,-3,3)
+	var viewSize=get_viewport().size
+
+	cam.zoom=Vector2.ONE*2.0**zoomLevel*min(viewSize.x/Global.VIEWPORT_SIZE.x,viewSize.y/Global.VIEWPORT_SIZE.y)
 	doAbilities()
 	doMovement(delta)
 		
@@ -202,22 +221,28 @@ func _physics_process2(delta):
 			rate/=5
 			energy=max(energy,energy*(1-2*rate)+maxEnergy*2*rate)
 		energyTick-=energyTickDelay
+	
+	var vp=velocity.dot(accelerationDir)*accelerationDir
+	velocity-=(velocity-vp)*(1-0.5**(delta/0.05)) #velocity halves every 0.05s due to drag
 		
 
 func resetStats():
 	super.resetStats()
 	maxEnergy=baseMaxEnergy
+	zoomEnabled=false
 
 func doAbilities():
 	var useSlots=[]
 	var toggleSlots=[]
 	for i in range(1,6):
 		if Input.is_action_pressed("use"+str(i)):
-			useSlots.append(i-1)
+			useSlots.append(hotbarRow*inventoryColumns+i-1)
 		if Input.is_action_pressed("toggle"+str(i)):
-			toggleSlots.append(i-1)
+			toggleSlots.append(hotbarRow*inventoryColumns+i-1)
 	if len(useSlots)>0 || len(toggleSlots)>0:
-		rpc_id(1,"doAbilitiesServer",get_local_mouse_position(),useSlots,toggleSlots)
+		var mousePos=get_viewport().get_mouse_position()-Vector2(get_viewport().size/2)
+		mousePos/=cam.zoom
+		rpc_id(1,"doAbilitiesServer",mousePos,useSlots,toggleSlots)
 
 @rpc("any_peer", "call_local") func doAbilitiesServer(mousePos,useSlots,toggleSlots):
 	if id!=multiplayer.get_remote_sender_id()||!is_multiplayer_authority():
@@ -302,7 +327,7 @@ func _on_respawn_pressed():
 func _on_quit_pressed():
 	teamRequests=[]
 	multiplayer.multiplayer_peer=null
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	get_tree().get_nodes_in_group("level")[0].changeLevel.emit("main_menu")
 
 
 func _on_line_edit_text_submitted(new_text):

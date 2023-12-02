@@ -54,8 +54,6 @@ func _physics_process(delta):
 	resetStats()
 	_physics_process2(delta)
 	if acceleration>0:
-		var vp=velocity.dot(accelerationDir)*accelerationDir
-		velocity-=(velocity-vp)*0.2*60*delta
 		velocity+=accelerationDir*acceleration*delta
 		if velocity.length() > speed:
 			velocity = velocity.normalized() * speed
@@ -65,6 +63,7 @@ func _physics_process(delta):
 	
 	if health<=0:
 		die()
+		return
 	position+=velocity * delta;
 	lifeSpan-=delta
 	if lifeSpan<=0&&lifeSpan>-1000000:

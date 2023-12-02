@@ -11,6 +11,7 @@ var durationTimer=-1000000
 var autofire=false
 var disabled=false #not used
 @export var abilityType=0
+@export var clampMouse=false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,7 +33,9 @@ func attemptAbility(mousePos):
 	if cooldownTimer>0||cost>bearer.energy||abilityType==1&&bearer.globalAttackCooldown>0:
 		return
 	if abilityType!=0&&bearer.spectator:
-		return	
+		return
+	if clampMouse&&mousePos!=null:
+		mousePos=mousePos.clamp(-Global.VIEWPORT_SIZE/2,Global.VIEWPORT_SIZE/2)
 	doAbility(mousePos)
 
 func doAbility(mousePos):

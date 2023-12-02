@@ -77,6 +77,10 @@ properties/9/path = NodePath(".:team")
 properties/9/spawn = true
 properties/9/sync = true
 properties/9/watch = false
+properties/10/path = NodePath(".:zoomEnabled")
+properties/10/spawn = true
+properties/10/sync = true
+properties/10/watch = false
 
 [node name="Player" type="Area2D" groups=["player"]]
 collision_mask = 3
@@ -209,17 +213,18 @@ text = "Quit"
 [node name="InventoryScreen" type="Control" parent="CanvasLayer"]
 visible = false
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Inventory" parent="CanvasLayer/InventoryScreen" instance=ExtResource("6_g4rmu")]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = 566.0
-offset_right = 1112.0
+offset_left = -546.0
 offset_bottom = 276.0
 grow_horizontal = 0
 

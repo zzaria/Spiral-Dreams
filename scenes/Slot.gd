@@ -40,7 +40,8 @@ func setItem(_itemname):
 	var _item
 	for i in Global.itemList:
 		if i.name==_itemname:
-			_item=i
+			_item=i.duplicate()
+			_item.name=str(randi())
 			break
 	if _item==null:
 		return

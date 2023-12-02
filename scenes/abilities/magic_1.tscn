@@ -1,5 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://crgvkwrd66qqt"]
+[gd_scene load_steps=5 format=3 uid="uid://crgvkwrd66qqt"]
 
 [ext_resource type="PackedScene" uid="uid://xt22v7a85654" path="res://scenes/abilities/gun.tscn" id="1_gfs51"]
+[ext_resource type="Script" path="res://scenes/abilities/magic_1.gd" id="2_47su8"]
+[ext_resource type="PackedScene" uid="uid://b6xxqtl7gs4op" path="res://scenes/projectiles/Harbinger.tscn" id="3_mwpwo"]
+[ext_resource type="PackedScene" uid="uid://me1och2dblbt" path="res://scenes/projectiles/projectile_small.tscn" id="4_hedsi"]
 
 [node name="Magic1" instance=ExtResource("1_gfs51")]
+script = ExtResource("2_47su8")
+harbinger = ExtResource("3_mwpwo")
+delay = 1.0
+bullet = ExtResource("4_hedsi")
+bulletSpeed = 4000
+bulletLifespan = 0.8
+damage = 1.0
+cooldown = 0.05
+duration = 0.0
+abilityType = 0
+clampMouse = true
+
+[node name="Label" parent="." index="1"]
+text = "Magic1"

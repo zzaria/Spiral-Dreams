@@ -7,6 +7,7 @@
 script = ExtResource("1_vi0sr")
 cooldown = 3.0
 duration = 0.0
+clampMouse = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(26, 29)

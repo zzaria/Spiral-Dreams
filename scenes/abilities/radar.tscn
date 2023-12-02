@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://csde1qkt4l5no"]
+
+[ext_resource type="PackedScene" uid="uid://bwo5sm6rdodam" path="res://scenes/abilities/dash.tscn" id="1_q1fpd"]
+[ext_resource type="Script" path="res://scenes/abilities/radar.gd" id="2_1bw4o"]
+
+[node name="Radar" instance=ExtResource("1_q1fpd")]
+script = ExtResource("2_1bw4o")
+cooldown = 0.1
+duration = 0.1
+
+[node name="Label" parent="." index="1"]
+text = "Radar"

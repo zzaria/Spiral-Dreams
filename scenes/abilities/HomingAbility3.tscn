@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqy6b7sg0o0me"]
+
+[ext_resource type="Script" path="res://scenes/abilities/HomingAbility3.gd" id="1_wot6g"]
+[ext_resource type="PackedScene" uid="uid://ecglalns8jkw" path="res://scenes/projectiles/Missile.tscn" id="2_oodvu"]
+[ext_resource type="Texture2D" uid="uid://4hliji7ie28i" path="res://art/enemyFlyingAlt_1.png" id="3_gah8i"]
+
+[node name="HomingAbility3" type="Node2D"]
+script = ExtResource("1_wot6g")
+bullet = ExtResource("2_oodvu")
+bulletSpeed = 1500
+bulletLifespan = 5.0
+damage = 6.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(26, 29)
+scale = Vector2(0.3, 0.254)
+texture = ExtResource("3_gah8i")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 11.0
+offset_top = -4.0
+offset_right = 51.0
+offset_bottom = 22.0
+text = "Missile3"

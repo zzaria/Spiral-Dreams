@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1va5fxwp54o1"]
+
+[ext_resource type="Script" path="res://scenes/levels/Level.gd" id="1_g74lu"]
+[ext_resource type="PackedScene" uid="uid://c8ywjgngxjsip" path="res://scenes/Player.tscn" id="2_g58v3"]
+[ext_resource type="Texture2D" uid="uid://b81x3jl7xi5p4" path="res://art/h.jpg" id="3_2efsq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uaxkj"]
+size = Vector2(2095, 1346)
+
+[node name="Level0" type="Node2D" groups=["level"]]
+script = ExtResource("1_g74lu")
+player_scene = ExtResource("2_g58v3")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_uaxkj")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -600.0
+offset_right = 960.0
+offset_bottom = 600.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_2efsq")
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 540)
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/Player.tscn", "res://scenes/projectiles/Projectile.tscn", "res://scenes/projectiles/projectile_small.tscn", "res://scenes/projectiles/interceptor.tscn", "res://scenes/projectiles/Missile.tscn", "res://scenes/projectiles/MissileMagic.tscn", "res://scenes/projectiles/Explosion.tscn")
+spawn_path = NodePath("..")
+
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
