@@ -1,49 +1,26 @@
-[gd_scene load_steps=5 format=3 uid="uid://bur2ruxobjix"]
+[gd_scene load_steps=4 format=3 uid="uid://ffvw7mhrdr1l"]
 
-[ext_resource type="Script" path="res://scenes/levels/Level.gd" id="1_t5u12"]
-[ext_resource type="PackedScene" uid="uid://c8ywjgngxjsip" path="res://scenes/Player.tscn" id="2_dq8sy"]
-[ext_resource type="Texture2D" uid="uid://b81x3jl7xi5p4" path="res://art/h.jpg" id="3_a836y"]
+[ext_resource type="PackedScene" uid="uid://dkrycjw3dc2x6" path="res://scenes/levels/Level.tscn" id="1_5j15l"]
+[ext_resource type="Texture2D" uid="uid://b81x3jl7xi5p4" path="res://art/h.jpg" id="2_ckgbk"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_uaxkj"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_prbrs"]
 size = Vector2(65536, 65536)
 
-[node name="Level2" type="Node2D" groups=["level"]]
-script = ExtResource("1_t5u12")
-player_scene = ExtResource("2_dq8sy")
+[node name="Level" instance=ExtResource("1_5j15l")]
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+shape = SubResource("RectangleShape2D_prbrs")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("RectangleShape2D_uaxkj")
-
-[node name="StartPosition" type="Marker2D" parent="."]
-position = Vector2(240, 540)
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://scenes/Player.tscn", "res://scenes/projectiles/Projectile.tscn", "res://scenes/projectiles/projectile_small.tscn", "res://scenes/projectiles/interceptor.tscn", "res://scenes/projectiles/Missile.tscn", "res://scenes/projectiles/MissileMagic.tscn", "res://scenes/projectiles/Explosion.tscn")
-spawn_path = NodePath("..")
-
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="TextureRect" type="TextureRect" parent="Control"]
-layout_mode = 1
+[node name="TextureRect" type="TextureRect" parent="." index="1"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -32020.0
-offset_top = -32020.0
-offset_right = -20.0
-offset_bottom = -20.0
+offset_left = -32000.0
+offset_top = -32000.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
-texture = ExtResource("3_a836y")
+texture = ExtResource("2_ckgbk")
 stretch_mode = 1
-
-[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

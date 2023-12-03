@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkrycjw3dc2x6"]
+
+[ext_resource type="Script" path="res://scenes/levels/Level.gd" id="1_twkv0"]
+[ext_resource type="PackedScene" uid="uid://c8ywjgngxjsip" path="res://scenes/Player.tscn" id="2_l0h6l"]
+
+[node name="Level" type="Node2D" groups=["level"]]
+script = ExtResource("1_twkv0")
+player_scene = ExtResource("2_l0h6l")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 540)
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/Player.tscn", "res://scenes/projectiles/Projectile.tscn", "res://scenes/projectiles/projectile_small.tscn", "res://scenes/projectiles/interceptor.tscn", "res://scenes/projectiles/Missile.tscn", "res://scenes/projectiles/MissileMagic.tscn", "res://scenes/projectiles/Explosion.tscn", "res://scenes/projectiles/RailgunBullet.tscn")
+spawn_path = NodePath("..")
+
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
