@@ -6,14 +6,15 @@
 
 [node name="HomingAbility2" type="Node2D"]
 script = ExtResource("1_ovheu")
-acceleration = 2000
-pattern = 1
+pattern = 2
 bullet = ExtResource("2_uijlf")
-bulletLifespan = 5.0
+bulletSpeed = 2400
+bulletLifespan = 3.0
 damage = 3.0
 cooldown = 5.0
 duration = 0.8
 cost = 300
+abilityType = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(26, 29)

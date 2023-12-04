@@ -37,16 +37,11 @@ func init(_position=Vector2.ZERO,_velocity=Vector2.ZERO,_owner2=null,_team=0,_li
 # Called when the node enters the scene tree for the first time.
 func _ready():	
 	reset()
+func _process(delta): # need this for inherited classes
+	pass
 
 func reset():
 	health=maxHealth
-
-func _enter_tree():
-	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 		
 func _physics_process(delta):
 	if !is_multiplayer_authority():
@@ -72,7 +67,7 @@ func resetStats():
 	speed=baseSpeed
 	acceleration=baseAcceleration
 	regen=0
-func _physics_process2(delta):
+func _physics_process2(_delta):
 	pass
 func _on_area_entered(area):
 	if !is_multiplayer_authority():
@@ -82,12 +77,18 @@ func _on_area_entered(area):
 	if area.get("damage")==null:
 		return
 	takeDamage(area.get("damage"),area.get("owner2"))
-func _on_area_exited(area):
+func _on_area_exited(_area):
 	pass
 
 func takeDamage(d,_source=null):
 	health-=d
+func onKill(_victim):
+	pass
 
 func die():
+	queue_free()
+	die_client.rpc()
+
+@rpc("authority") func die_client():
 	queue_free()
 

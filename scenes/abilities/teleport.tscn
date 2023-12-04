@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bnq4nfcak10w6"]
 
-[ext_resource type="Script" path="res://scenes/abilities/Teleport.gd" id="1_2o56f"]
+[ext_resource type="Script" path="res://scenes/abilities/teleport.gd" id="1_2o56f"]
 [ext_resource type="Texture2D" uid="uid://4hliji7ie28i" path="res://art/enemyFlyingAlt_1.png" id="2_1266f"]
 
 [node name="Teleport" type="Node2D"]

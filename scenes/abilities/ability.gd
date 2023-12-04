@@ -38,8 +38,9 @@ func attemptAbility(mousePos):
 		mousePos=mousePos.clamp(-Global.VIEWPORT_SIZE/2,Global.VIEWPORT_SIZE/2)
 	doAbility(mousePos)
 
-func doAbility(mousePos):
-	cooldownTimer=cooldown
+func doAbility(_mousePos):
+	cooldownTimer=max(cooldownTimer,1.0/30)
+	cooldownTimer+=cooldown
 	durationTimer=duration
 	bearer.energy-=cost
 	if abilityType==1:

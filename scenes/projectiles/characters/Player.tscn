@@ -1,20 +1,20 @@
 [gd_scene load_steps=10 format=3 uid="uid://c8ywjgngxjsip"]
 
-[ext_resource type="Texture2D" uid="uid://p4n7816y6ti2" path="res://art/playerGrey_up1.png" id="1_gew4j"]
-[ext_resource type="Script" path="res://scenes/Player.gd" id="1_xyh4u"]
-[ext_resource type="Texture2D" uid="uid://70s825mu4hcm" path="res://art/playerGrey_up2.png" id="2_eutt8"]
-[ext_resource type="Texture2D" uid="uid://2hv86o4ir7l8" path="res://art/playerGrey_walk1.png" id="3_8pdeq"]
-[ext_resource type="Texture2D" uid="uid://bpj53fa3exf3u" path="res://art/playerGrey_walk2.png" id="4_ps5dt"]
-[ext_resource type="PackedScene" uid="uid://qjrifqoruxpn" path="res://scenes/inventory.tscn" id="6_g4rmu"]
+[ext_resource type="Script" path="res://scenes/projectiles/characters/Player.gd" id="1_gecry"]
+[ext_resource type="Texture2D" uid="uid://p4n7816y6ti2" path="res://art/playerGrey_up1.png" id="2_g2tch"]
+[ext_resource type="Texture2D" uid="uid://70s825mu4hcm" path="res://art/playerGrey_up2.png" id="3_1o4rx"]
+[ext_resource type="Texture2D" uid="uid://2hv86o4ir7l8" path="res://art/playerGrey_walk1.png" id="4_p0pyu"]
+[ext_resource type="Texture2D" uid="uid://bpj53fa3exf3u" path="res://art/playerGrey_walk2.png" id="5_r5cvp"]
+[ext_resource type="PackedScene" uid="uid://qjrifqoruxpn" path="res://scenes/inventory.tscn" id="6_0csd6"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e8tpw"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_gew4j")
+"texture": ExtResource("2_g2tch")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_eutt8")
+"texture": ExtResource("3_1o4rx")
 }],
 "loop": true,
 "name": &"up",
@@ -22,10 +22,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_8pdeq")
+"texture": ExtResource("4_p0pyu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_ps5dt")
+"texture": ExtResource("5_r5cvp")
 }],
 "loop": true,
 "name": &"walk",
@@ -82,12 +82,13 @@ properties/10/spawn = true
 properties/10/sync = true
 properties/10/watch = false
 
-[node name="Player" type="Area2D" groups=["player"]]
+[node name="Player" type="Area2D" groups=["character", "player"]]
 collision_mask = 3
-script = ExtResource("1_xyh4u")
+script = ExtResource("1_gecry")
 score = 0
 maxHealth = 60
-baseAcceleration = 4000
+baseAcceleration = 2000
+baseSpeed = 200
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -219,7 +220,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Inventory" parent="CanvasLayer/InventoryScreen" instance=ExtResource("6_g4rmu")]
+[node name="Inventory" parent="CanvasLayer/InventoryScreen" instance=ExtResource("6_0csd6")]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0

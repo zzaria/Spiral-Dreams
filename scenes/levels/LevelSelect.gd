@@ -80,11 +80,14 @@ func _on_start_button_pressed():
 		e=peer.create_server(port)
 	else:
 		e=peer.create_client(ip,port)
+		changeLevel.emit()
 	if e!=OK:
 		return
 	multiplayer.multiplayer_peer=peer
 	startMultiplayer.emit()
-	changeLevel.emit("Level"+str(level))
+	if host:
+		changeLevel.emit("Level"+str(level))
+	
 	
 
 

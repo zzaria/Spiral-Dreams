@@ -7,7 +7,7 @@ func updateTimer(delta):
 	super.updateTimer(delta)
 	timer+=delta
 
-func doAbility(mousePos):
+func doAbility(_mousePos):
 	super.doAbility(null)
 	var dir=Vector2.DOWN.rotated(timer*2*PI*rotationSpeed)
 	for i in range(0,6):

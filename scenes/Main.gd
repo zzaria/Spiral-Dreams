@@ -6,13 +6,18 @@ func _ready():
 	level.changeLevel.connect(changeLevel)
 	level.startMultiplayer.connect(startMultiplayer)
 
-func changeLevel(newLevel):
-	level.queue_free()
-	newLevel=load("res://scenes/levels/"+newLevel+".tscn").instantiate()
-	level=newLevel
-	add_child(newLevel)
-	level.changeLevel.connect(changeLevel)
-	level.startMultiplayer.connect(startMultiplayer)
+func changeLevel(newLevel=null):
+	if level:
+		level.queue_free()
+	if newLevel:
+		var x=newLevel
+		newLevel=load("res://scenes/levels/"+newLevel+".tscn").instantiate()
+		level=newLevel
+		add_child(newLevel)
+		level.changeLevel.connect(changeLevel)
+		level.startMultiplayer.connect(startMultiplayer)
+	else:
+		level=null
 
 func startMultiplayer():
 	if is_multiplayer_authority():
@@ -35,14 +40,12 @@ func authenticate_client(id):
 		return
 	if level.levelStarted&&Global.teamAndRespawnDuringGame>=1:
 		return
-	print_debug(1)
 	if password==Global.password:
 		var id=multiplayer.get_remote_sender_id()
 		if pendingconnections.has(id):
 			pendingconnections[id].stop()
 			pendingconnections[id].queue_free()
 			pendingconnections.erase(id)
-			print_debug(11)
 			level.add_player(id)
 
 func kick_player(id):

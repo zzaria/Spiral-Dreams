@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://ckx0ok2376hlp"]
+
+[ext_resource type="Script" path="res://scenes/abilities/Gun.gd" id="1_dlbdq"]
+[ext_resource type="PackedScene" uid="uid://b7w0pno0bob1p" path="res://scenes/projectiles/Special1.tscn" id="2_lcc4t"]
+[ext_resource type="Texture2D" uid="uid://4hliji7ie28i" path="res://art/enemyFlyingAlt_1.png" id="3_hhf7l"]
+
+[node name="SpecialGun1" type="Node2D"]
+script = ExtResource("1_dlbdq")
+bullet = ExtResource("2_lcc4t")
+bulletSpeed = 300
+bulletLifespan = 5
+damage = 4
+cooldown = 1.0
+abilityType = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(26, 29)
+scale = Vector2(0.3, 0.254)
+texture = ExtResource("3_hhf7l")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 11.0
+offset_top = -4.0
+offset_right = 51.0
+offset_bottom = 22.0
+text = "Special 1"

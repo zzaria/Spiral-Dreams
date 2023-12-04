@@ -1,6 +1,4 @@
-extends Projectile
-
-var target
+extends TrackingProjectile
 var targetPos
 var autoTarget
 var pattern=0
@@ -15,32 +13,25 @@ func init2(_pattern,pos,_speed,_acceleration,_autoTarget=false,_startupDuration=
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process2(delta):
-	if !is_multiplayer_authority():
-		return
-
-	if target:
-		targetPos=target.position
+	if autoTarget:
+		if target:
+			targetPos=target.position
+		else:
+			targetPos=position+velocity*100
 	if startupDuration>0||autoTarget&&!target:
 		startupDuration-=delta
 		targetPos=owner2.position
 		acceleration=2000
 		speed=600
-	if pattern==0:  #naive strategy
-		accelerationDir=targetPos-position
+		accelerationDir=(targetPos-position).normalized()
+	elif pattern==0:  
+		accelerationDir=(targetPos-position).normalized()
+		var vp=velocity.dot(accelerationDir)*accelerationDir
+		velocity-=(velocity-vp)*(1-0.5**(delta/0.5))
 	elif pattern==1:
 		accelerationDir=(targetPos-position).normalized()-velocity.normalized()
 		if accelerationDir.length()<0.1:
 			accelerationDir=targetPos-position
-	accelerationDir=accelerationDir.normalized()
+		accelerationDir=accelerationDir.normalized()
 	super(delta)
 
-
-func _on_targeting_area_entered(area):
-	if !is_multiplayer_authority():
-		return
-	if !autoTarget:
-		return
-	if !area.get_groups().has("player")||team==area.get("team"):
-		return
-	target=area
-	

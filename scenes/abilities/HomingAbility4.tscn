@@ -11,6 +11,8 @@ spread = 9
 bullet = ExtResource("2_u2gf8")
 bulletSpeed = 1500
 bulletLifespan = 5.0
+abilityType = 1
+clampMouse = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(26, 29)

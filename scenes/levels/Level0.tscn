@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b6etvwe2k8rc3"]
+[gd_scene load_steps=5 format=3 uid="uid://b6etvwe2k8rc3"]
 
 [ext_resource type="PackedScene" uid="uid://dkrycjw3dc2x6" path="res://scenes/levels/Level.tscn" id="1_537di"]
 [ext_resource type="Texture2D" uid="uid://b81x3jl7xi5p4" path="res://art/h.jpg" id="3_2efsq"]
+[ext_resource type="PackedScene" uid="uid://do1m0py168olx" path="res://scenes/projectiles/characters/Character5.tscn" id="3_v7j0j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ett8"]
 size = Vector2(2095, 1346)
@@ -11,16 +12,9 @@ size = Vector2(2095, 1346)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
 shape = SubResource("RectangleShape2D_5ett8")
 
-[node name="TextureRect" type="TextureRect" parent="." index="1"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -960.0
-offset_top = -600.0
-offset_right = 960.0
-offset_bottom = 600.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Background" type="Node2D" parent="." index="1"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Background" index="0"]
 texture = ExtResource("3_2efsq")
+
+[node name="Character5" parent="." index="4" instance=ExtResource("3_v7j0j")]

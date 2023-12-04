@@ -12,6 +12,7 @@ bulletSpeed = 1500
 bulletLifespan = 5.0
 damage = 2.0
 cooldown = 0.3
+abilityType = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(26, 29)

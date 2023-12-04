@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dr0yxb3i7ndoi"]
+
+[ext_resource type="Texture2D" uid="uid://b81x3jl7xi5p4" path="res://art/h.jpg" id="2_56rvh"]
+
+[node name="Leveltest" type="Node2D" groups=["level"]]
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Background"]
+texture_repeat = 2
+scale = Vector2(2, 2)
+texture = ExtResource("2_56rvh")
+region_enabled = true
+region_rect = Rect2(0, 0, 32000, 32000)

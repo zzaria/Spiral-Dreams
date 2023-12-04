@@ -94,7 +94,6 @@ func resetInventory():
 	for i in range(0,inventorySize):
 		items+=[null]
 		itemDisabled+=[false]
-	var slots=get_node("CanvasLayer/InventoryScreen/Inventory/GridContainer").get_children()
 	var i=0
 	for item in Global.initialEquip:
 		setItem(i,item.duplicate())
@@ -153,7 +152,7 @@ func _enter_tree():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	super._process(delta)
+	super(delta)
 	if spectator&&multiplayer.get_unique_id()!=id:
 		self.hide()
 	else:
@@ -262,7 +261,7 @@ func doAbilities():
 func doMovement(delta):
 	rpc_id(1,"doMovementServer",delta,Input.get_vector("move_left","move_right","move_up","move_down"))
 
-@rpc("any_peer", "call_local") func doMovementServer(delta,inputDir):
+@rpc("any_peer", "call_local") func doMovementServer(_delta,inputDir):
 	if id!=multiplayer.get_remote_sender_id()||!is_multiplayer_authority():
 		return
 	accelerationDir=inputDir
@@ -293,8 +292,8 @@ func takeDamage(d,source=null):
 		die()
 func onKill(victim):
 	score+=victim.score
-	energy+=maxEnergy/2
-	health+=maxHealth/6
+	energy+=maxEnergy/2.0
+	health+=maxHealth/6.0
 	
 func die():
 	spectator=true

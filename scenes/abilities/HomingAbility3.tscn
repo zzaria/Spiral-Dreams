@@ -10,6 +10,7 @@ bullet = ExtResource("2_oodvu")
 bulletSpeed = 1500
 bulletLifespan = 5.0
 damage = 6.0
+abilityType = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(26, 29)

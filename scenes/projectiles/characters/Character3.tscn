@@ -1,9 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8cd5mq8fstu5"]
+[gd_scene load_steps=5 format=3 uid="uid://o3hg34b1iuu2"]
 
-[ext_resource type="Script" path="res://scenes/projectiles/MissileMagic.gd" id="1_tc1gm"]
+[ext_resource type="Script" path="res://scenes/projectiles/characters/Character3.gd" id="1_offr2"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_8qvnm"]
-radius = 5.09902
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0kwyf"]
+size = Vector2(50, 50)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mgwfn"]
 properties/0/path = NodePath(".:position")
@@ -12,13 +12,18 @@ properties/0/sync = true
 properties/0/watch = false
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b001a"]
-radius = 1046.02
+radius = 1000.0
 
-[node name="MissileMagic" type="Area2D"]
-collision_layer = 2
-script = ExtResource("1_tc1gm")
+[node name="Character3" type="Area2D" groups=["character"]]
+position = Vector2(-1, 0)
+collision_mask = 3
+script = ExtResource("1_offr2")
 targetDistance = 1000
-untargetDistance = 1000000000
+untargetDistance = 2000
+maxHealth = 30
+team = 9999
+baseAcceleration = 400
+baseSpeed = 10
 metadata/_edit_group_ = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -27,16 +32,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -5.0
-offset_top = -5.0
-offset_right = 5.0
-offset_bottom = 5.0
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_8qvnm")
+shape = SubResource("RectangleShape2D_0kwyf")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_mgwfn")
@@ -47,6 +52,11 @@ collision_layer = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_b001a")
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.25
+autostart = true
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_targeting_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

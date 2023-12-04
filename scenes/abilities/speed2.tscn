@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://iprq0827pbew"]
+
+[ext_resource type="PackedScene" uid="uid://bwo5sm6rdodam" path="res://scenes/abilities/dash.tscn" id="1_hxhka"]
+[ext_resource type="Script" path="res://scenes/abilities/speed1.gd" id="2_pyafn"]
+
+[node name="Speed2" instance=ExtResource("1_hxhka")]
+script = ExtResource("2_pyafn")
+speed = 600
+acceleration = 3000
+damage = 0.0
+cooldown = 0.1
+duration = 0.1
+
+[node name="Label" parent="." index="1"]
+text = "Speed 2"

@@ -7,3 +7,7 @@
 script = ExtResource("1_qhduv")
 
 [node name="MainMenu" parent="." instance=ExtResource("2_6wy0k")]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/levels/Level0.tscn", "res://scenes/levels/Level1.tscn", "res://scenes/levels/Level2.tscn", "res://scenes/levels/Leveltest.tscn")
+spawn_path = NodePath("..")

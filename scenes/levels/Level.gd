@@ -3,7 +3,6 @@ extends Level_Base
 @export var player_scene:PackedScene
 var initialEquip
 var players=[]
-var levelStarted=0
 var teamCount=0
 var playerCounter=0
 var teamjoinrequests=[]
@@ -74,7 +73,6 @@ func start_game():
 
 func start_game2():
 	levelStarted=1
-	var bounds=get_node("Area2D/CollisionShape2D").shape.get_rect()
 	for player in players:
 		player.healthEnabled=true
 		player.show_message(null)

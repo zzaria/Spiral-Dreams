@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/levels/LevelSelect.gd" id="1_1imfh"]
 [ext_resource type="Script" path="res://scenes/Slot.gd" id="2_8pxih"]
-[ext_resource type="PackedScene" uid="uid://c8ywjgngxjsip" path="res://scenes/Player.tscn" id="2_52ytm"]
+[ext_resource type="PackedScene" uid="uid://c8ywjgngxjsip" path="res://scenes/projectiles/characters/Player.tscn" id="2_52ytm"]
 [ext_resource type="Script" path="res://scenes/inventory.gd" id="2_avusd"]
 
 [sub_resource type="Gradient" id="Gradient_yff6y"]
@@ -91,20 +91,6 @@ text = "Network Port"
 layout_mode = 2
 max_value = 65535.0
 value = 212.0
-
-[node name="Label7" type="Label" parent="JoinLevelConfig/VBoxContainer"]
-layout_mode = 2
-text = "Level"
-
-[node name="ItemList5" type="ItemList" parent="JoinLevelConfig/VBoxContainer"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-auto_height = true
-item_count = 3
-max_columns = 2
-item_0/text = "Small"
-item_1/text = "Medium"
-item_2/text = "Big"
 
 [node name="StartButton" type="Button" parent="JoinLevelConfig/VBoxContainer"]
 layout_mode = 2
@@ -887,7 +873,6 @@ script = ExtResource("2_8pxih")
 [connection signal="text_changed" from="JoinLevelConfig/VBoxContainer/Password/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="text_changed" from="JoinLevelConfig/VBoxContainer/Ip/LineEdit" to="." method="_on_join_ip_changed"]
 [connection signal="value_changed" from="JoinLevelConfig/VBoxContainer/Port/SpinBox2" to="." method="_on_port_value_changed"]
-[connection signal="item_selected" from="JoinLevelConfig/VBoxContainer/ItemList5" to="." method="_on_item_list_5_item_selected"]
 [connection signal="pressed" from="JoinLevelConfig/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="LevelConfig/HBoxContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="value_changed" from="LevelConfig/HBoxContainer/VBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]

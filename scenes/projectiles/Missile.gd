@@ -1,24 +1,24 @@
-extends Projectile
+extends TrackingProjectile
 var explosion=load("res://scenes/projectiles/Explosion.tscn")
 
-var target
 var targetPos
 var autoTarget
 var pattern=0
-func init2(_pattern,pos,_speed,_acceleration,targetRadius,_autoTarget=false):
+var preflightTime=0
+var boostTime=0
+func init2(_pattern,pos,_speed,_acceleration,_autoTarget):
 	pattern=_pattern
 	baseSpeed=_speed
 	baseAcceleration=_acceleration
 	targetPos=pos
-	get_node("Area2D/CollisionShape2D").shape.radius=targetRadius
 	autoTarget=_autoTarget
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
-	if !is_multiplayer_authority():
-		return
-	if target:
-		targetPos=target.position
+func _physics_process2(delta):
+	if autoTarget:
+		if target:
+			targetPos=target.position
+		elif velocity!=Vector2.ZERO:
+			targetPos=position+velocity.normalized()*100
 	if (targetPos-position).length()<50:
 		lifeSpan=0
 	if pattern==0:  #naive strategy
@@ -27,26 +27,21 @@ func _physics_process(delta):
 		accelerationDir=(targetPos-position).normalized()-velocity.normalized()
 		if accelerationDir.length()<0.1:
 			accelerationDir=targetPos-position
+	elif pattern==2:
+		acceleration=0
+		var decay=min(1,0.257778 *lifeSpan + 0.0531111) if lifeSpan>0.5 else 1
+		velocity=(targetPos-position).normalized()*speed*(1-decay**delta)+velocity*(decay**delta)
 	accelerationDir=accelerationDir.normalized()
 	super(delta)
 func die():
 	var e=explosion.instantiate()
 	e.init(position,Vector2.ZERO,owner2,team,0.2,damage,1000)
 	e.init2(200)
-	e.name=str(randi())+"e"
+	e.name=str(randi())
 	self.get_tree().get_nodes_in_group("level")[0].add_child(e)
-	super()
+	super()#
 
 
+	
 
-func _on_targeting_area_entered(area):
-	if !is_multiplayer_authority():
-		return
-	if !autoTarget:
-		return
-	if !area.get_groups().has("player")||team==area.get("team"):
-		return
-	target=area
-func takeDamage(a,b=null):
-	super(a,b)
 	

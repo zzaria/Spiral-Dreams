@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://ovhfhxoukugq"]
+
+[ext_resource type="PackedScene" uid="uid://bwo5sm6rdodam" path="res://scenes/abilities/dash.tscn" id="1_xr178"]
+[ext_resource type="Script" path="res://scenes/abilities/speed1.gd" id="2_h5wyi"]
+
+[node name="Speed3" instance=ExtResource("1_xr178")]
+script = ExtResource("2_h5wyi")
+speed = 1000
+acceleration = 5000
+damage = 0.0
+cooldown = 0.1
+duration = 0.1
+
+[node name="Label" parent="." index="1"]
+text = "Speed 3"

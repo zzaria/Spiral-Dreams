@@ -5,13 +5,11 @@ var mousePos1
 var mousePos2
 
 func attemptAbility(mousePos):
-	if clampMouse&&mousePos!=null:
-		mousePos=mousePos.clamp(-Global.VIEWPORT_SIZE/2,Global.VIEWPORT_SIZE/2)
+	super(mousePos)
+
+func doAbility(mousePos):
 	mousePos2=mousePos1
 	mousePos1=mousePos
-	super(null)
-
-func doAbility(_mousePos):
 	super.doAbility(null)
 	var dir
 	if mousePos2==null||(mousePos1-mousePos2).length()<0.1:

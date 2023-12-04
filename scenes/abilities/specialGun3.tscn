@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://isjdf6mcxlpm"]
+
+[ext_resource type="Script" path="res://scenes/abilities/specialGun2.gd" id="1_xo10a"]
+[ext_resource type="PackedScene" uid="uid://bnnpr6xs5ugur" path="res://scenes/projectiles/Special3.tscn" id="2_j0hur"]
+[ext_resource type="Texture2D" uid="uid://4hliji7ie28i" path="res://art/enemyFlyingAlt_1.png" id="3_w7dux"]
+
+[node name="SpecialGun3" type="Node2D"]
+script = ExtResource("1_xo10a")
+bullet = ExtResource("2_j0hur")
+bulletSpeed = 2000
+bulletLifespan = 2.0
+cooldown2 = 1
+cooldown2Accumulation = 3
+cooldown = 0.2
+abilityType = 2
+clampMouse = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(26, 29)
+scale = Vector2(0.3, 0.254)
+texture = ExtResource("3_w7dux")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 11.0
+offset_top = -4.0
+offset_right = 51.0
+offset_bottom = 22.0
+text = "Special 3"
