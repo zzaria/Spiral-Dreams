@@ -11,9 +11,6 @@ var items
 var itemDisabled
 var healthBar
 var energyBar
-var scoreDisplay
-var messageBox
-var message
 var nametag
 @export var zoomEnabled=false #can easily be bypassed
 var zoomLevel=0
@@ -26,7 +23,10 @@ const inventorySize=50
 const inventoryRows=5
 const inventoryColumns=10
 var hotbarRow=0
-@export var score=1
+@export var score=1:
+	set(value):
+		if is_inside_tree():	
+			get_node("CanvasLayer/TopLeftUi/ScoreDisplay/Label").text="Score: "+str(round(value))
 var globalAttackCooldown=0
 var energyTick=0
 var timeSinceHit=0
@@ -117,11 +117,8 @@ func _ready():
 		inventory=get_node("CanvasLayer/InventoryScreen/Inventory")
 		inventory.itemOwner=self
 		
-		healthBar=get_node("CanvasLayer/HealthBar")
-		energyBar=get_node("CanvasLayer/EnergyBar")
-		scoreDisplay=get_node("CanvasLayer/ScoreDisplay")
-		messageBox=get_node("CanvasLayer/MessageBox")
-		message=get_node("CanvasLayer/MessageBox/CenterContainer/Panel/PanelContainer/Label")
+		healthBar=get_node("CanvasLayer/TopLeftUi/HealthBar")
+		energyBar=get_node("CanvasLayer/TopLeftUi/EnergyBar")
 		var slots=get_node("CanvasLayer/InventoryScreen/Inventory/GridContainer").get_children()
 		var i=0
 		for slot in slots:
@@ -131,7 +128,7 @@ func _ready():
 			slot.rightClickSignal.connect(inventorySlotRightClick_client)
 			i+=1
 		if !is_multiplayer_authority():
-			get_node("CanvasLayer/InventoryScreen/Control").hide()
+			get_node("CanvasLayer/InventoryScreen/VBoxContainer/HostActions").hide()
 	if is_multiplayer_authority():
 		var timer = Timer.new()
 		timer.connect("timeout",afsdlknj) 
@@ -147,8 +144,8 @@ func afsdlknj():
 			rpc_id(id,"setItem_client",i,item.name)
 		i+=1
 
-func _enter_tree():
-	pass 
+func updateNameTag(): 
+	nametag.text=str(team)+"-"+str(name)+"\n"+username
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -157,7 +154,8 @@ func _process(delta):
 		self.hide()
 	else:
 		self.show()
-	nametag.text=str(team)+"-"+str(id)+"\n"+username
+	
+	updateNameTag() #how to override setter for team and name?
 
 	if velocity.length()>0.01:
 		$AnimatedSprite2D.play()
@@ -180,7 +178,6 @@ func _process(delta):
 	energyBar.max_value=maxEnergy
 	energyBar.value=energy
 	energyBar.get_node("Label").text="Energy: "+str(round(energy))
-	scoreDisplay.get_node("Label").text="Score: "+str(round(score))
 
 	for i in range(inventoryRows):
 		if Input.is_action_pressed("hotbar"+str(i+1)):
@@ -308,10 +305,11 @@ func show_message(text):
 
 @rpc("authority", "call_local", "reliable")
 func show_message_client(text):
+	var messageBox=get_node("CanvasLayer/MessageBox")
 	if text==null:
 		messageBox.hide()
 	else:
-		message.text=text
+		messageBox.get_node("CenterContainer/Label").text=text
 		messageBox.show()
 
 func _on_respawn_pressed():
@@ -326,12 +324,12 @@ func _on_respawn_pressed():
 func _on_quit_pressed():
 	teamRequests=[]
 	multiplayer.multiplayer_peer=null
-	get_tree().get_nodes_in_group("level")[0].changeLevel.emit("main_menu")
+	Global.changeLevel.emit("main_menu")
 
 
 func _on_line_edit_text_submitted(new_text):
 	requestjointeam.rpc_id(1,new_text.to_int())
-	get_node("CanvasLayer/InventoryScreen/LineEdit").text=""
+	get_node("CanvasLayer/InventoryScreen/VBoxContainer/HBoxContainer/RequestTeam").text=""
 @rpc("any_peer", "call_local") func requestjointeam(team):
 	if id!=multiplayer.get_remote_sender_id() || !is_multiplayer_authority():
 		return
@@ -372,7 +370,7 @@ func startgame():
 
 @rpc("authority","call_local","reliable")
 func setAllowedActions(team,respawn,levelStarted):
-	get_node("CanvasLayer/DeathScreen/PanelContainer/VBoxContainer/CenterContainer/HBoxContainer/Respawn").visible=respawn
-	get_node("CanvasLayer/InventoryScreen/LineEdit").visible=team
-	get_node("CanvasLayer/InventoryScreen/Control/BoxContainer/Button").text="End game" if levelStarted else "Start game"
+	get_node("CanvasLayer/DeathScreen/CenterContainer/VBoxContainer/CenterContainer/HBoxContainer/Respawn").visible=respawn
+	get_node("CanvasLayer/InventoryScreen/VBoxContainer/HBoxContainer/RequestTeam").visible=team
+	get_node("CanvasLayer/InventoryScreen/VBoxContainer/HostActions/Button").text="End game" if levelStarted else "Start game"
 	

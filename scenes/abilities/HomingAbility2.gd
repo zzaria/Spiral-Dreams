@@ -22,6 +22,6 @@ func doEffect():
 			newBullet.init(pos0,Vector2.ZERO,bearer,bearer.team,bulletLifespan,damage,bulletHealth)
 			newBullet.init2(pattern,bearer.position+mousePos1*100,bulletSpeed,acceleration,true)
 			newBullet.name=str(randi())
-			bearer.get_tree().get_nodes_in_group("level")[0].add_child(newBullet)
+			Global.spawnObject.emit(newBullet)
 			newBullet.find_new_target(bearer.position+mousePos1)
 

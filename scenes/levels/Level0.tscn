@@ -18,3 +18,9 @@ shape = SubResource("RectangleShape2D_5ett8")
 texture = ExtResource("3_2efsq")
 
 [node name="Character5" parent="." index="4" instance=ExtResource("3_v7j0j")]
+
+[node name="Timer" type="Timer" parent="." index="5"]
+wait_time = 0.3
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

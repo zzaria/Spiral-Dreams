@@ -60,12 +60,12 @@ func shoot(dir):
 	var newBullet=bullet.instantiate()
 	newBullet.init(position,dir,owner2,team,5,1,1)
 	newBullet.name=str(randi())
-	get_tree().get_nodes_in_group("level")[0].add_child(newBullet)
+	Global.spawnObject.emit(newBullet)
 func spawnEnemy():
 	var e=enemy.instantiate()
 	e.init2(position,Vector2.from_angle(randf_range(0,2*PI))*200,owner2,team)
 	e.name=str(randi())
-	get_tree().get_nodes_in_group("level")[0].add_child(e)
+	Global.spawnObject.emit(e)
 
 
 func _on_timer_timeout():

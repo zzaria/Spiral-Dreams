@@ -33,6 +33,10 @@ theme_override_constants/margin_bottom = 0
 [node name="LevelType" type="GridContainer" parent="LevelList"]
 layout_mode = 2
 
+[node name="BackButton" type="Button" parent="LevelList/LevelType"]
+layout_mode = 2
+text = "Back"
+
 [node name="Username" type="LineEdit" parent="LevelList/LevelType"]
 layout_mode = 2
 placeholder_text = "name"
@@ -49,6 +53,7 @@ layout_mode = 2
 text = "Join"
 
 [node name="JoinLevelConfig" type="HSplitContainer" parent="."]
+visible = false
 offset_right = 912.0
 offset_bottom = 599.0
 
@@ -187,31 +192,25 @@ value = 1.0
 rounded = true
 allow_greater = true
 
-[node name="Label3" type="Label" parent="LevelConfig/HBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LevelConfig/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="LevelConfig/HBoxContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
 text = "Choose teams"
 
-[node name="ItemList" type="ItemList" parent="LevelConfig/HBoxContainer/VBoxContainer2"]
-custom_minimum_size = Vector2(0, 35)
+[node name="CheckBox" type="CheckBox" parent="LevelConfig/HBoxContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
-auto_height = true
-item_count = 2
-max_columns = 2
-item_0/text = "On"
-item_1/text = "Off"
 
-[node name="Label6" type="Label" parent="LevelConfig/HBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="LevelConfig/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="LevelConfig/HBoxContainer/VBoxContainer2/HBoxContainer2"]
 layout_mode = 2
 text = "Assign teams"
 
-[node name="ItemList3" type="ItemList" parent="LevelConfig/HBoxContainer/VBoxContainer2"]
-custom_minimum_size = Vector2(0, 35)
+[node name="CheckBox" type="CheckBox" parent="LevelConfig/HBoxContainer/VBoxContainer2/HBoxContainer2"]
 layout_mode = 2
-auto_height = true
-item_count = 2
-max_columns = 2
-item_0/text = "On"
-item_1/text = "Off"
 
 [node name="Label7" type="Label" parent="LevelConfig/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
@@ -866,6 +865,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_1imx7")
 script = ExtResource("2_8pxih")
 
+[connection signal="pressed" from="LevelList/LevelType/BackButton" to="." method="_on_leveltype_back_button_pressed"]
 [connection signal="text_changed" from="LevelList/LevelType/Username" to="." method="_on_username_text_changed"]
 [connection signal="pressed" from="LevelList/LevelType/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="LevelList/LevelType/Join" to="." method="_on_join_pressed"]
@@ -883,6 +883,6 @@ script = ExtResource("2_8pxih")
 [connection signal="pressed" from="LevelConfig/HBoxContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="item_selected" from="LevelConfig/HBoxContainer/VBoxContainer2/ItemList4" to="." method="_on_item_list_4_item_selected"]
 [connection signal="value_changed" from="LevelConfig/HBoxContainer/VBoxContainer2/SpinBox2" to="." method="_on_spin_box_2_value_changed"]
-[connection signal="item_selected" from="LevelConfig/HBoxContainer/VBoxContainer2/ItemList" to="." method="_on_item_list_item_selected"]
-[connection signal="item_selected" from="LevelConfig/HBoxContainer/VBoxContainer2/ItemList3" to="." method="_on_item_list_3_item_selected"]
+[connection signal="toggled" from="LevelConfig/HBoxContainer/VBoxContainer2/HBoxContainer/CheckBox" to="." method="_on_check_box2_toggled"]
+[connection signal="toggled" from="LevelConfig/HBoxContainer/VBoxContainer2/HBoxContainer2/CheckBox" to="." method="_on_check_box_toggled"]
 [connection signal="item_selected" from="LevelConfig/HBoxContainer/VBoxContainer2/ItemList5" to="." method="_on_item_list_5_item_selected"]

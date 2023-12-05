@@ -1,12 +1,54 @@
 extends Level_Base
 
-var peer = ENetMultiplayerPeer.new();
+var peer
 var host=false
-var ip="127.0.0.1"
-var port=212
+var ip="127.0.0.1":
+	set(x):
+		get_node("JoinLevelConfig/VBoxContainer/Ip/LineEdit").text=x
+var port=212:
+	set(x):
+		get_node("LevelConfig/HBoxContainer/VBoxContainer/Port").value=x
+		get_node("JoinLevelConfig/VBoxContainer/Port/SpinBox2").value=x
 var equip=[]
 var itemsPath="res://scenes/abilities/"
-var level=0
+var desiredPlayerCount=2:
+	set(x):
+		Global.desiredPlayerCount=x
+		get_node("LevelConfig/HBoxContainer/VBoxContainer/HSlider").value=x
+		get_node("LevelConfig/HBoxContainer/VBoxContainer/SpinBox").value=x
+var teamAndRespawnDuringGame=0:
+	set(x):
+		get_node("LevelConfig/HBoxContainer/VBoxContainer/ItemList2").select(x,true)
+		Global.teamAndRespawnDuringGame=x
+var password="":
+	set(x):
+		Global.password=x
+		get_node("LevelConfig/HBoxContainer/VBoxContainer/LineEdit").text=x
+		get_node("JoinLevelConfig/VBoxContainer/Password/LineEdit").text=x
+var teamSizeRule=0:
+	set(x):
+		Global.teamSizeRule=x
+		get_node("LevelConfig/HBoxContainer/VBoxContainer2/ItemList4").select(x,true)
+var teamSize=1:
+	set(x):
+		Global.teamSize=x
+		get_node("LevelConfig/HBoxContainer/VBoxContainer2/SpinBox2").value=x
+var chooseTeams=false:
+	set(x):
+		Global.chooseTeams=x
+		get_node("LevelConfig/HBoxContainer/VBoxContainer2/HBoxContainer/CheckBox").button_pressed=x
+var assignTeams=false:
+	set(x):
+		Global.assignTeams=x
+		get_node("LevelConfig/HBoxContainer/VBoxContainer2/HBoxContainer2/CheckBox").button_pressed=x
+var level=0:
+	set(x):
+		get_node("LevelConfig/HBoxContainer/VBoxContainer2/ItemList5").select(x,true)
+var username="":
+	set(x):
+		Global.username=x
+		get_node("LevelList/LevelType/Username").text=x
+
 @export var player_scene:PackedScene
 
 func getItems():
@@ -35,9 +77,17 @@ func _ready():
 	equip[10]="regen_2"
 	Global.initialEquip=[]
 	Global.itemList=[]
-	Global.username=""
-	Global.teamAndRespawnDuringGame=0
-	Global.chooseTeams=true
+	ip=ip
+	port=port
+	desiredPlayerCount=desiredPlayerCount
+	teamAndRespawnDuringGame=teamAndRespawnDuringGame
+	password=password
+	teamSizeRule=teamSizeRule
+	teamSize=teamSize
+	chooseTeams=chooseTeams
+	assignTeams=assignTeams
+	level=level
+	username=username
 	
 	var i=0	
 	for slot in get_node("LevelConfig/CenterContainer/Inventory/DefaultInventory/GridContainer").get_children():
@@ -51,15 +101,6 @@ func _ready():
 		if item in equip:
 			continue
 		Global.initialEquip+=[load(itemsPath+item).instantiate()]
-
-func _on_h_slider_value_changed(value):
-	Global.desiredPlayerCount=value
-	get_node("LevelConfig/VBoxContainer/SpinBox").value=value
-
-
-func _on_spin_box_value_changed(value):
-	Global.desiredPlayerCount=value
-	get_node("LevelConfig/VBoxContainer/HSlider").value=value
 
 func _on_host_pressed():
 	$LevelConfig.show()
@@ -75,26 +116,31 @@ func _on_join_pressed():
 
 
 func _on_start_button_pressed():
+	peer=ENetMultiplayerPeer.new()
 	var e
 	if host:
 		e=peer.create_server(port)
 	else:
 		e=peer.create_client(ip,port)
-		changeLevel.emit()
 	if e!=OK:
 		return
 	multiplayer.multiplayer_peer=peer
-	startMultiplayer.emit()
+	Global.startMultiplayer()
 	if host:
-		changeLevel.emit("Level"+str(level))
+		Global.changeLevel.emit("Level"+str(level))
 	
 	
 
+
+func _on_h_slider_value_changed(value):
+	Global.desiredPlayerCount=value
+
+
+func _on_spin_box_value_changed(value):
+	Global.desiredPlayerCount=value
 
 func _on_port_value_changed(value):
 	port=value
-	get_node("LevelConfig/VBoxContainer/Port").value=value
-	get_node("JoinLevelConfig/VBoxContainer/Port/SpinBox2").value=value
 
 
 func _on_join_ip_changed(new_text):
@@ -113,27 +159,32 @@ func _on_spin_box_2_value_changed(value):
 
 
 func _on_username_text_changed(new_text):
-	Global.username=new_text
+	username=new_text
 
-func _on_item_list_item_selected(index):
-	Global.chooseTeams=index==0
 func _on_item_list_2_item_selected(index):
-	Global.teamAndRespawnDuringGame=index
+	teamAndRespawnDuringGame=index
 
 
 func _on_line_edit_text_changed(new_text):
-	Global.password=new_text
+	password=new_text
 
-
-
-
-func _on_item_list_3_item_selected(index):
-	Global.assignTeams=index==0
 
 
 func _on_item_list_4_item_selected(index):
-	Global.teamSizeRule=index
+	teamSizeRule=index
 
 
 func _on_item_list_5_item_selected(index):
 	level=index
+
+
+func _on_check_box2_toggled(button_pressed):
+	chooseTeams=button_pressed
+
+
+func _on_check_box_toggled(button_pressed):
+	assignTeams=button_pressed
+
+
+func _on_leveltype_back_button_pressed():
+	Global.changeLevel.emit("main_menu")

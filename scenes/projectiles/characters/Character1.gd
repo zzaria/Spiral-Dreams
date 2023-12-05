@@ -34,4 +34,4 @@ func _on_timer_timeout():
 	var newBullet=bullet.instantiate()
 	newBullet.init(position,dir,owner2,team,2,1,1)
 	newBullet.name=str(randi())
-	get_tree().get_nodes_in_group("level")[0].add_child(newBullet)
+	Global.spawnObject.emit(newBullet)

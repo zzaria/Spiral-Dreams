@@ -77,8 +77,6 @@ func _on_area_entered(area):
 	if area.get("damage")==null:
 		return
 	takeDamage(area.get("damage"),area.get("owner2"))
-func _on_area_exited(_area):
-	pass
 
 func takeDamage(d,_source=null):
 	health-=d
@@ -87,7 +85,7 @@ func onKill(_victim):
 
 func die():
 	queue_free()
-	die_client.rpc()
+	#die_client.rpc() #only for things not spawned by multiplayerspawner
 
 @rpc("authority") func die_client():
 	queue_free()

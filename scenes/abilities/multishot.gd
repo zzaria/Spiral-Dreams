@@ -15,4 +15,4 @@ func doAbility(mousePos):
 		var newBullet=bullet.instantiate() if i==0 else bulletSecondary.instantiate()
 		newBullet.init(bearer.position,dir2,bearer,bearer.team,bulletLifespan,damage,bulletHealth)
 		newBullet.name=str(randi())
-		bearer.get_tree().get_nodes_in_group("level")[0].add_child(newBullet)
+		Global.spawnObject.emit(newBullet)

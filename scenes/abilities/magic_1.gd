@@ -23,4 +23,4 @@ func doAbility(mousePos):
 	var h=harbinger.instantiate()
 	h.lifeSpan=delay
 	h.init2(bearer.position+mousePos1,dir,newBullet)
-	bearer.get_tree().get_nodes_in_group("level")[0].add_child(h)
+	Global.spawnObject.emit(h)

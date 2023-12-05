@@ -38,7 +38,7 @@ func die():
 	e.init(position,Vector2.ZERO,owner2,team,0.2,damage,1000)
 	e.init2(200)
 	e.name=str(randi())
-	self.get_tree().get_nodes_in_group("level")[0].add_child(e)
+	Global.spawnObject.emit(e)
 	super()#
 
 

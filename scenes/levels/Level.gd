@@ -17,8 +17,12 @@ func _ready():
 				teams+=[0]
 			teamCount=Global.teamSize
 		add_player()
+		Global.spawnObject.connect(spawnObject)
 	else:
 		multiplayer.peer_disconnected.connect(host_disconnected)
+
+func spawnObject(x:Node):
+	add_child.call_deferred(x)
 
 func add_player(id=1):
 	print_debug("New player ",id)
@@ -40,7 +44,7 @@ func add_player(id=1):
 	player.initPlayer(t)
 	teams[t]+=1
 	player.resetInventory()
-	add_child(player)
+	spawnObject(player)
 	players.append(player)
 	player.respawn.connect(respawn)
 	player.requestjointeamsignal.connect(newteamjoinrequest)
@@ -108,7 +112,7 @@ func respawn(player,check=true):
 
 func host_disconnected(id):
 	if id==1:
-		changeLevel.emit("main_menu")
+		Global.changeLevel.emit("main_menu")
 		return
 
 func _on_area_2d_area_exited(area):

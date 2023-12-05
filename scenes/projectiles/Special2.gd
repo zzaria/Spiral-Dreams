@@ -17,5 +17,5 @@ func die():
 		var proj=subProjectile.instantiate()
 		proj.init(position,dir,owner2,team,2,damage,health)
 		proj.name=str(randi())
-		self.get_tree().get_nodes_in_group("level")[0].add_child(proj)
+		Global.spawnObject.emit(proj)
 	super()

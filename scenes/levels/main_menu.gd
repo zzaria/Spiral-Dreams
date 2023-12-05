@@ -1,4 +1,4 @@
 extends Level_Base
 
 func _on_button_pressed():
-	changeLevel.emit("level_select")
+	Global.changeLevel.emit("level_select")
