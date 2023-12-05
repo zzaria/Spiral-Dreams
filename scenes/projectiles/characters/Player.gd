@@ -328,7 +328,7 @@ func _on_quit_pressed():
 
 
 func _on_line_edit_text_submitted(new_text):
-	requestjointeam.rpc_id(1,new_text.to_int())
+	requestjointeam.rpc_id(1,new_text)
 	get_node("CanvasLayer/InventoryScreen/VBoxContainer/HBoxContainer/RequestTeam").text=""
 @rpc("any_peer", "call_local") func requestjointeam(team):
 	if id!=multiplayer.get_remote_sender_id() || !is_multiplayer_authority():
@@ -338,7 +338,7 @@ func _on_line_edit_text_submitted(new_text):
 @rpc("authority", "call_local", "reliable") func showteamrequest(id,name):
 	teamRequests+=[[id,name]]
 	get_node("CanvasLayer/TeamRequests").show()
-	get_node("CanvasLayer/TeamRequests/VBoxContainer/Label").text="Add to team"+name+" "+str(id)+"?"
+	get_node("CanvasLayer/TeamRequests/MarginContainer/VBoxContainer/Label").text="Add to team"+name+" "+str(id)+"?"
 
 
 
@@ -350,7 +350,7 @@ func _on_button_pressed():
 @rpc("any_peer", "call_local") func acceptteamrequest(x):
 	if id!=multiplayer.get_remote_sender_id() || !is_multiplayer_authority():
 		return
-	acceptteamrequestsignal.emit(x,id)
+	acceptteamrequestsignal.emit(x,name)
 	
 
 

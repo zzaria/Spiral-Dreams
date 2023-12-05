@@ -134,13 +134,13 @@ func newteamjoinrequest(a,b):
 				if player.id==a:
 					player.team=b
 			return
-	if a==b:
-		for player in players:
-			if player.id==a:
-				player.team=teamCount
-				teamCount+=1
-				teams+=[1]
-				break
+	for player in players:
+		if player.id==a&&player.name==b:
+			teams[player.team]-=1
+			player.team=teamCount
+			teamCount+=1
+			teams+=[1]
+			return
 
 	var name=null
 	for player in players:
@@ -149,8 +149,9 @@ func newteamjoinrequest(a,b):
 			break
 	if name==null:
 		return
+	print_debug(b)
 	for player in players:
-		if player.id==b:
+		if player.name==b:
 			if teams[player.team]>=Global.teamSize:
 				return
 			var c=false
@@ -169,7 +170,7 @@ func acceptteamrequest(a,b):
 		if x[0]==a&&x[1]==b&&x[2]>time-10:
 			var team=null
 			for player in players:
-				if player.id==b:
+				if player.name==b:
 					team=player.team
 					break
 			if team!=null:
