@@ -8,6 +8,7 @@ var playerCounter=0
 var teamjoinrequests=[]
 var teams=[]
 var time=0
+var teamAlivePlayerCount=[]
 
 func _ready():
 	if is_multiplayer_authority():
@@ -30,6 +31,7 @@ func add_player(id=1):
 	player.id=id
 	player.name=str(playerCounter)
 	playerCounter+=1
+	player.initPlayer()
 	var t=teamCount
 	if Global.assignTeams||Global.teamSizeRule==1:
 		t=0
@@ -38,15 +40,12 @@ func add_player(id=1):
 				t=i
 		if teamCount==0||Global.teamSizeRule==0&&teams[t]>=Global.teamSize:
 			t=teamCount
-	if t==teamCount:
-		teams+=[0]
-		teamCount+=1
-	player.initPlayer(t)
-	teams[t]+=1
+	addPlayerToTeam(player,t)
 	player.resetInventory()
 	spawnObject(player)
 	players.append(player)
 	player.respawn.connect(respawn)
+	player.deathSignal.connect(playerDead)
 	player.requestjointeamsignal.connect(newteamjoinrequest)
 	player.acceptteamrequestsignal.connect(acceptteamrequest)
 	player.startgamesignal.connect(toggle_game)
@@ -62,8 +61,6 @@ func toggle_game():
 		end_game()
 	elif levelStarted==0:
 		start_game()
-func end_game():
-	pass
 func start_game():
 	levelStarted=2
 	for p in players:
@@ -71,7 +68,7 @@ func start_game():
 	var timer = Timer.new()
 	timer.connect("timeout",start_game2) 
 	timer.set_one_shot(true)
-	timer.set_wait_time(1) #value is in seconds: 600 seconds = 10 minutes
+	timer.set_wait_time(3) #value is in seconds: 600 seconds = 10 minutes
 	add_child(timer) 
 	timer.start() 
 
@@ -82,6 +79,12 @@ func start_game2():
 		player.show_message(null)
 		player.setAllowedActions.rpc_id(player.id,Global.teamAndRespawnDuringGame<1,Global.teamAndRespawnDuringGame<2,true)
 		respawn(player,false)
+func end_game():
+	levelStarted=0
+	for player in players:
+		player.healthEnabled=false
+		player.show_message("Game Over")
+		player.setAllowedActions.rpc_id(player.id,Global.chooseTeams,true,false)
 
 func remove_player(id):
 	for player in players:
@@ -108,7 +111,17 @@ func respawn(player,check=true):
 		return
 	var bounds=get_node("Area2D/CollisionShape2D").shape.get_rect()		
 	var pos=Vector2(randf_range(bounds.position.x,bounds.end.x),randf_range(bounds.position.y,bounds.end.y))
-	player.initPlayer(player.team,pos)
+	player.initPlayer(pos)
+	teamAlivePlayerCount[player.team]+=1
+func playerDead(player):
+	teamAlivePlayerCount[player.team]-=1
+	var aliveTeamCount=0
+	for team in teamAlivePlayerCount:
+		if team>0:
+			aliveTeamCount+=1
+	print_debug(aliveTeamCount)
+	if aliveTeamCount<=1:
+		end_game()
 
 func host_disconnected(id):
 	if id==1:
@@ -124,62 +137,68 @@ func _on_area_2d_area_exited(area):
 		var dir=(area.position-newPos).normalized()
 		area.velocity-=area.velocity.dot(dir)*dir*2
 		area.position=newPos
+	
+func playerFromId(id:int):
+	for player in players:
+		if player.id==id:
+			return player
+	return null
+func playerFromName(name: String):
+	for player in players:
+		if player.name==name:
+			return player
+	return null
+func switchPlayerToTeam(player,team):
+	teams[player.team]-=1
+	teamAlivePlayerCount[team]-=int(!player.spectator)
+	addPlayerToTeam(player,team)
+func addPlayerToTeam(player,team):
+	if team>=teamCount:
+		team=teamCount
+		teamCount+=1
+		teams+=[0]
+		teamAlivePlayerCount+=[0]
+	player.team=team
+	teams[team]+=1
+	teamAlivePlayerCount[team]+=int(!player.spectator)
+
+
 func newteamjoinrequest(a,b):
 	if levelStarted==1&&Global.teamAndRespawnDuringGame>=1||!Global.chooseTeams:
 		return
+	var player=playerFromId(a)
+	if !player:
+		return
 	if Global.teamSizeRule==1:
 		if b in range(teamCount):
-			teams[b]+=1
-			for player in players:
-				if player.id==a:
-					player.team=b
-			return
-	for player in players:
-		if player.id==a&&player.name==b:
-			teams[player.team]-=1
-			player.team=teamCount
-			teamCount+=1
-			teams+=[1]
-			return
-
-	var name=null
-	for player in players:
-		if player.id==a:
-			name=player.username
-			break
-	if name==null:
+			switchPlayerToTeam(player,b)
 		return
-	for player in players:
-		if player.name==b:
-			if teams[player.team]>=Global.teamSize:
-				return
-			var c=false
-			for x in teamjoinrequests:
-				if x[0]==a&&x[1]==b:
-					if x[2]>time-10:
-						return
-					x[2]=time
-					c=true
-			if !c:
-				teamjoinrequests+=[[a,b,time]]
-			player.showteamrequest.rpc_id(player.id,a,name)
-			break
+	if player.name==b:
+		switchPlayerToTeam(player,teamCount)
+		return
+	var player2=playerFromName(b)
+	if player2:
+		if teams[player2.team]>=Global.teamSize:
+			return
+		var c=false
+		for x in teamjoinrequests: #ignore if same request was made in last 10 seconds
+			if x[0]==a&&x[1]==b:
+				if x[2]>time-10: 
+					return
+				x[2]=time
+				c=true
+		if !c:
+			teamjoinrequests+=[[a,b,time]]
+		player2.showteamrequest.rpc_id(player2.id,a,player.name)
+
 func acceptteamrequest(a,b):
 	for x in teamjoinrequests:
 		if x[0]==a&&x[1]==b&&x[2]>time-10:
-			var team=null
-			for player in players:
-				if player.name==b:
-					team=player.team
-					break
-			if team!=null:
-				for player in players:
-					if player.id==a:
-						teams[player.team]-=1
-						player.team=team
-						teams[player.team]+=1
-						break
-			break
+			var player1=playerFromId(a)
+			var player2=playerFromName(b)
+			if player1&&player2:
+				switchPlayerToTeam(player1,player2.team)
+			return
 
 func _physics_process(delta):
 	time+=delta

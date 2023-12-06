@@ -1,6 +1,7 @@
 class_name Player
 extends Projectile
-signal respawn
+signal respawn(player)
+signal deathSignal(player)
 signal requestjointeamsignal
 signal acceptteamrequestsignal
 signal startgamesignal
@@ -37,8 +38,7 @@ var dashing=false
 @export var username=""
 var teamRequests=[]
 
-func initPlayer(_team,spawnPoint=Vector2.ZERO):
-	team=_team
+func initPlayer(spawnPoint=Vector2.ZERO):
 	health=maxHealth
 	energy=baseMaxEnergy
 	velocity=Vector2.ZERO
@@ -295,6 +295,7 @@ func onKill(victim):
 func die():
 	spectator=true
 	$CollisionShape2D.disabled=true
+	deathSignal.emit(self)
 	rpc_id(id,"die_client")
 @rpc("authority", "call_local", "reliable")
 func die_client():
@@ -309,7 +310,7 @@ func show_message_client(text):
 	if text==null:
 		messageBox.hide()
 	else:
-		messageBox.get_node("CenterContainer/Label").text=text
+		messageBox.get_node("CenterContainer/VBoxContainer/Label").text=text
 		messageBox.show()
 
 func _on_respawn_pressed():
@@ -374,3 +375,7 @@ func setAllowedActions(team,respawn,levelStarted):
 	get_node("CanvasLayer/InventoryScreen/VBoxContainer/HBoxContainer/RequestTeam").visible=team
 	get_node("CanvasLayer/InventoryScreen/VBoxContainer/HostActions/Button").text="End game" if levelStarted else "Start game"
 	
+
+
+func close_messagebox():
+	get_node("CanvasLayer/MessageBox").hide()

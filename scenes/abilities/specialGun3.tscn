@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/abilities/specialGun2.gd" id="1_xo10a"]
 [ext_resource type="PackedScene" uid="uid://bnnpr6xs5ugur" path="res://scenes/projectiles/Special3.tscn" id="2_j0hur"]
-[ext_resource type="Texture2D" uid="uid://4hliji7ie28i" path="res://art/enemyFlyingAlt_1.png" id="3_w7dux"]
+[ext_resource type="Texture2D" uid="uid://djolic3gawwto" path="res://art/crates_study_x2.png" id="3_sxv2r"]
 
 [node name="SpecialGun3" type="Node2D"]
 script = ExtResource("1_xo10a")
@@ -16,9 +16,9 @@ abilityType = 2
 clampMouse = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(26, 29)
-scale = Vector2(0.3, 0.254)
-texture = ExtResource("3_w7dux")
+position = Vector2(42, 43)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_sxv2r")
 
 [node name="Label" type="Label" parent="."]
 offset_left = 11.0

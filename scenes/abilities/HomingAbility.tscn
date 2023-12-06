@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/abilities/HomingAbility.gd" id="1_6f26g"]
 [ext_resource type="PackedScene" uid="uid://ecglalns8jkw" path="res://scenes/projectiles/Missile.tscn" id="2_ci86t"]
-[ext_resource type="Texture2D" uid="uid://4hliji7ie28i" path="res://art/enemyFlyingAlt_1.png" id="3_fv4ne"]
+[ext_resource type="Texture2D" uid="uid://4hliji7ie28i" path="res://art/enemyFlyingAlt_1.png" id="3_litgd"]
 
 [node name="HomingAbility" type="Node2D"]
 script = ExtResource("1_6f26g")
@@ -20,7 +20,7 @@ abilityType = 1
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(26, 29)
 scale = Vector2(0.3, 0.254)
-texture = ExtResource("3_fv4ne")
+texture = ExtResource("3_litgd")
 
 [node name="Label" type="Label" parent="."]
 offset_left = 11.0

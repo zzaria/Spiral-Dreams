@@ -243,27 +243,6 @@ text = "Respawn"
 layout_mode = 2
 text = "Quit"
 
-[node name="MessageBox" type="PanelContainer" parent="CanvasLayer"]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -75.0
-offset_right = 150.0
-offset_bottom = 75.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/MessageBox"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/MessageBox/CenterContainer"]
-layout_mode = 2
-text = "Level Starting"
-
 [node name="InventoryScreen" type="Control" parent="CanvasLayer"]
 visible = false
 layout_mode = 3
@@ -315,6 +294,34 @@ text = "Start game"
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/InventoryScreen/VBoxContainer"]
 layout_mode = 2
 
+[node name="MessageBox" type="PanelContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -75.0
+offset_right = 150.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/MessageBox"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MessageBox/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/MessageBox/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Level Starting"
+
+[node name="Button" type="Button" parent="CanvasLayer/MessageBox/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Close"
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
 [connection signal="pressed" from="CanvasLayer/TeamRequests/MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
@@ -325,3 +332,4 @@ layout_mode = 2
 [connection signal="pressed" from="CanvasLayer/InventoryScreen/VBoxContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="text_changed" from="CanvasLayer/InventoryScreen/VBoxContainer/HostActions/ChangePassword" to="." method="_on_line_edit_2_text_changed"]
 [connection signal="pressed" from="CanvasLayer/InventoryScreen/VBoxContainer/HostActions/Button" to="." method="startgame"]
+[connection signal="pressed" from="CanvasLayer/MessageBox/CenterContainer/VBoxContainer/Button" to="." method="close_messagebox"]
