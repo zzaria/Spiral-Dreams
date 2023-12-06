@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://ccx4aonbjk3sx"]
+
+[ext_resource type="PackedScene" uid="uid://xt22v7a85654" path="res://scenes/abilities/gun.tscn" id="1_lg1qv"]
+[ext_resource type="Script" path="res://scenes/abilities/magic_1.gd" id="2_2m283"]
+[ext_resource type="PackedScene" uid="uid://b6xxqtl7gs4op" path="res://scenes/projectiles/Harbinger.tscn" id="3_ijhuk"]
+[ext_resource type="PackedScene" uid="uid://brwmm8ljxvscn" path="res://scenes/projectiles/RedBeam.tscn" id="4_wtdfe"]
+
+[node name="Magic4" instance=ExtResource("1_lg1qv")]
+script = ExtResource("2_2m283")
+harbinger = ExtResource("3_ijhuk")
+delay = 1.0
+beamWidth = 120
+offset = 0
+bullet = ExtResource("4_wtdfe")
+bulletSpeed = 0
+bulletHealth = 200
+bulletLifespan = 0.8
+damage = 5.0
+cooldown = 0.5
+duration = 0.0
+clampMouse = true
+
+[node name="Label" parent="." index="1"]
+text = "Magic4"

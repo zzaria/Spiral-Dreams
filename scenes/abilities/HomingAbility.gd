@@ -12,4 +12,5 @@ func doAbility(mousePos):
 	newBullet.init2(pattern,mousePos*100+bearer.position,bulletSpeed,acceleration,true)
 	newBullet.name=str(randi())
 	Global.spawnObject.emit(newBullet)
+	await newBullet.ready
 	newBullet.find_new_target(bearer.position+mousePos)

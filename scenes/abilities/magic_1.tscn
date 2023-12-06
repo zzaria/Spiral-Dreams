@@ -9,6 +9,8 @@
 script = ExtResource("2_47su8")
 harbinger = ExtResource("3_mwpwo")
 delay = 0.5
+beamWidth = 4
+offset = 1250
 bullet = ExtResource("4_hedsi")
 bulletSpeed = 4000
 bulletLifespan = 0.8

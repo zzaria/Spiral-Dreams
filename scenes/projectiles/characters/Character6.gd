@@ -22,7 +22,7 @@ func _physics_process2(delta):
 	else:
 		accelerationDir=Vector2.ZERO
 	var vp=velocity.dot(accelerationDir)*accelerationDir
-	velocity-=(velocity-vp)*(1-0.5**(delta/0.05)) #velocity halves every 0.05s due to drag
+	velocity-=(velocity-vp)*(1-0.5**(delta/0.05))
 	super(delta)
 
 func _on_timer_timeout():
@@ -31,7 +31,7 @@ func _on_timer_timeout():
 	if !targetPos:
 		return
 	const speed=1300.0
-	var dir=(target.position-position).normalized()*speed
+	var dir=(targetPos-position).normalized()*speed
 	var newBullet=bullet.instantiate()
 	newBullet.init(position,dir,owner2,team,3,1,1)
 	newBullet.name=str(randi())

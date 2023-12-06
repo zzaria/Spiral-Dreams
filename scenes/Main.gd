@@ -5,7 +5,6 @@ func _ready():
 
 
 func changeLevel(newLevel=null):
-	print_debug(newLevel)
 	if Global.level:
 		Global.level.queue_free()
 	if newLevel:

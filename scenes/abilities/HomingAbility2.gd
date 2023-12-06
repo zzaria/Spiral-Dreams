@@ -23,5 +23,6 @@ func doEffect():
 			newBullet.init2(pattern,bearer.position+mousePos1*100,bulletSpeed,acceleration,true)
 			newBullet.name=str(randi())
 			Global.spawnObject.emit(newBullet)
+			await newBullet.ready
 			newBullet.find_new_target(bearer.position+mousePos1)
 

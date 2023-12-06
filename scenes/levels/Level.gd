@@ -149,7 +149,6 @@ func newteamjoinrequest(a,b):
 			break
 	if name==null:
 		return
-	print_debug(b)
 	for player in players:
 		if player.name==b:
 			if teams[player.team]>=Global.teamSize:

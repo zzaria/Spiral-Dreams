@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://brwmm8ljxvscn"]
+
+[ext_resource type="Script" path="res://scenes/projectiles/Projectile.gd" id="1_lfsx2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6oteq"]
+size = Vector2(2500, 120)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mgwfn"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+
+[node name="RedBeam" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_lfsx2")
+baseSpeed = 0
+metadata/_edit_group_ = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1250.0
+offset_top = -60.0
+offset_right = 1250.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_6oteq")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_mgwfn")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

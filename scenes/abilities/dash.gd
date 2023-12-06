@@ -4,8 +4,8 @@ var dashing
 func _ready():
 	dashing=false
 
-func doAbility(mousePos):
-	super.doAbility(mousePos)
+func doAbility(_mousePos):
+	super.doAbility(_mousePos)
 	dashing=true
 
 func doEffect():
