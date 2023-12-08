@@ -54,8 +54,8 @@ text = "Join"
 
 [node name="JoinLevelConfig" type="HSplitContainer" parent="."]
 visible = false
-offset_right = 912.0
-offset_bottom = 599.0
+offset_right = 199.0
+offset_bottom = 171.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="JoinLevelConfig"]
 layout_mode = 2
@@ -102,7 +102,8 @@ layout_mode = 2
 text = "Start Game"
 
 [node name="LevelConfig" type="HSplitContainer" parent="."]
-offset_right = 912.0
+visible = false
+offset_right = 834.0
 offset_bottom = 599.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="LevelConfig"]
@@ -216,14 +217,14 @@ layout_mode = 2
 text = "Level"
 
 [node name="ItemList5" type="ItemList" parent="LevelConfig/HBoxContainer/VBoxContainer2"]
-custom_minimum_size = Vector2(0, 35)
+custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
 auto_height = true
 item_count = 4
 max_columns = 2
-item_0/text = "Small"
-item_1/text = "Medium"
-item_2/text = "Big"
+item_0/text = "Standard (Small)"
+item_1/text = "Standard (Medium)"
+item_2/text = "Standard (Big)"
 item_3/text = "Base Defense"
 
 [node name="CenterContainer" type="CenterContainer" parent="LevelConfig"]

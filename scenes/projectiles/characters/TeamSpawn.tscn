@@ -11,9 +11,10 @@ properties/0/spawn = true
 properties/0/sync = true
 properties/0/watch = false
 
-[node name="TeamSpawn" type="Area2D"]
+[node name="TeamSpawn" type="Area2D" groups=["character"]]
 collision_mask = 3
 script = ExtResource("1_nw4qk")
+maxHealth = 1000
 metadata/_edit_group_ = true
 
 [node name="ColorRect" type="ColorRect" parent="."]

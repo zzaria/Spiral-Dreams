@@ -42,7 +42,7 @@ func initPlayer():
 	spectator=false
 	owner2=self
 	zoomLevel=0
-	$CollisionShape2D.disabled=false
+	$CollisionShape2D.set_deferred("disabled",false)
 func setItem(index,item):
 	if index>=inventorySize:
 		return
@@ -270,6 +270,8 @@ func _input(event):
 		get_node("CanvasLayer/InventoryScreen").visible=!get_node("CanvasLayer/InventoryScreen").visible
 		
 func _on_area_entered(area):
+	if !is_multiplayer_authority():
+		return
 	super._on_area_entered(area)
 func takeDamage(d,source=null):
 	if !healthEnabled:
@@ -291,7 +293,7 @@ func onKill(victim):
 func die():
 	if !spectator:
 		spectator=true
-		$CollisionShape2D.disabled=true
+		$CollisionShape2D.set_deferred("disabled",true)
 		deathSignal.emit(self)
 		rpc_id(id,"die_client")
 @rpc("authority", "call_local", "reliable")
