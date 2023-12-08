@@ -1,4 +1,4 @@
-extends TrackingProjectile
+extends Character
 var bullet=load("res://scenes/projectiles/projectile_small.tscn")
 var dash
 var energy=9999
@@ -14,6 +14,7 @@ func _ready():
 	owner2=self
 	dash=load("res://scenes/abilities/dash.tscn").instantiate()
 	dash.bearer=self
+	score=1
 	super()
 
 func resetStats():
@@ -97,5 +98,6 @@ func _on_targeting_area_entered(area):
 
 	
 
-func _on_area_2d_area_exited(area):
+func _on_targeting_area_exited(area):
 	incoming.erase(area)
+

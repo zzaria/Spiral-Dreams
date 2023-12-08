@@ -43,6 +43,7 @@ var assignTeams=false:
 		get_node("LevelConfig/HBoxContainer/VBoxContainer2/HBoxContainer2/CheckBox").button_pressed=x
 var level=0:
 	set(x):
+		level=x
 		get_node("LevelConfig/HBoxContainer/VBoxContainer2/ItemList5").select(x,true)
 var username="":
 	set(x):

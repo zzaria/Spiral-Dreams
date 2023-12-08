@@ -102,7 +102,6 @@ layout_mode = 2
 text = "Start Game"
 
 [node name="LevelConfig" type="HSplitContainer" parent="."]
-visible = false
 offset_right = 912.0
 offset_bottom = 599.0
 
@@ -220,11 +219,12 @@ text = "Level"
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 auto_height = true
-item_count = 3
+item_count = 4
 max_columns = 2
 item_0/text = "Small"
 item_1/text = "Medium"
 item_2/text = "Big"
+item_3/text = "Base Defense"
 
 [node name="CenterContainer" type="CenterContainer" parent="LevelConfig"]
 layout_mode = 2

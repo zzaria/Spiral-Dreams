@@ -1,4 +1,4 @@
-extends TrackingProjectile
+extends Character
 var bullet=load("res://scenes/projectiles/projectile.tscn")
 
 var targetPos
@@ -36,3 +36,5 @@ func _on_timer_timeout():
 	newBullet.init(position,dir,owner2,team,3,1,1)
 	newBullet.name=str(randi())
 	Global.spawnObject.emit(newBullet)
+
+

@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhqex7cuu6grj"]
+
+[ext_resource type="PackedScene" uid="uid://dkrycjw3dc2x6" path="res://scenes/levels/Level.tscn" id="1_16p76"]
+[ext_resource type="Script" path="res://scenes/levels/Level3.gd" id="2_m4ag2"]
+[ext_resource type="Texture2D" uid="uid://b81x3jl7xi5p4" path="res://art/h.jpg" id="2_vlidj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w410a"]
+size = Vector2(16384, 16384)
+
+[node name="Level3" instance=ExtResource("1_16p76")]
+script = ExtResource("2_m4ag2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+shape = SubResource("RectangleShape2D_w410a")
+
+[node name="Background" type="Node2D" parent="." index="1"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Background" index="0"]
+texture_repeat = 2
+texture = ExtResource("2_vlidj")
+region_enabled = true
+region_rect = Rect2(0, 0, 16000, 16000)
+
+[node name="Spawn1" type="Marker2D" parent="." index="3"]
+position = Vector2(-7152, 7243)
+
+[node name="Spawn2" type="Marker2D" parent="." index="4"]
+position = Vector2(6943, -7039)

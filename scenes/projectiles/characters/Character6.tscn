@@ -20,8 +20,10 @@ collision_mask = 3
 script = ExtResource("1_0hwm6")
 targetDistance = 1000
 untargetDistance = 2000
+damage = null
 maxHealth = 50
 team = 9999
+health = null
 baseAcceleration = 1000
 baseSpeed = 500
 metadata/_edit_group_ = true
@@ -57,6 +59,5 @@ wait_time = 1.5
 autostart = true
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
-[connection signal="area_exited" from="." to="." method="_on_area_exited"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_targeting_area_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

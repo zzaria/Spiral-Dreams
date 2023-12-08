@@ -151,18 +151,37 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "Energy"
 
-[node name="ScoreDisplay" type="ColorRect" parent="CanvasLayer/TopLeftUi"]
+[node name="Scores" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="ScoreDisplay" type="ColorRect" parent="CanvasLayer/Scores"]
 custom_minimum_size = Vector2(80, 25)
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="CanvasLayer/TopLeftUi/ScoreDisplay"]
+[node name="Label" type="Label" parent="CanvasLayer/Scores/ScoreDisplay"]
 layout_mode = 0
 offset_left = 5.0
 offset_right = 48.0
 offset_bottom = 26.0
 text = "Score
 "
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Scores"]
+custom_minimum_size = Vector2(80, 25)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Scores/Panel"]
+layout_mode = 0
+offset_right = 160.0
+offset_bottom = 23.0
+scale = Vector2(0.5, 0.5)
+autowrap_mode = 2
 
 [node name="TeamRequests" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -323,7 +342,6 @@ layout_mode = 2
 text = "Close"
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
-[connection signal="area_exited" from="." to="." method="_on_area_exited"]
 [connection signal="pressed" from="CanvasLayer/TeamRequests/MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TeamRequests/MarginContainer/VBoxContainer/HBoxContainer/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="CanvasLayer/DeathScreen/CenterContainer/VBoxContainer/CenterContainer/HBoxContainer/Respawn" to="." method="_on_respawn_pressed"]

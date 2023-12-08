@@ -1,9 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bgbx3l66hmksc"]
+[gd_scene load_steps=4 format=3 uid="uid://cjc21nxdj72wx"]
 
-[ext_resource type="Script" path="res://scenes/projectiles/RailgunBullet.gd" id="1_cdhqq"]
+[ext_resource type="Script" path="res://scenes/projectiles/characters/TeamSpawn.gd" id="1_nw4qk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8qvnm"]
-radius = 15.0
+radius = 99.0808
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mgwfn"]
 properties/0/path = NodePath(".:position")
@@ -11,9 +11,9 @@ properties/0/spawn = true
 properties/0/sync = true
 properties/0/watch = false
 
-[node name="RailgunBullet" type="Area2D"]
-collision_layer = 2
-script = ExtResource("1_cdhqq")
+[node name="TeamSpawn" type="Area2D"]
+collision_mask = 3
+script = ExtResource("1_nw4qk")
 metadata/_edit_group_ = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -22,10 +22,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -15.0
-offset_top = -15.0
-offset_right = 15.0
-offset_bottom = 15.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)

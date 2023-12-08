@@ -24,10 +24,7 @@ const inventorySize=50
 const inventoryRows=5
 const inventoryColumns=10
 var hotbarRow=0
-@export var score=1:
-	set(value):
-		if is_inside_tree():	
-			get_node("CanvasLayer/TopLeftUi/ScoreDisplay/Label").text="Score: "+str(round(value))
+@export var score=1
 var globalAttackCooldown=0
 var energyTick=0
 var timeSinceHit=0
@@ -38,13 +35,11 @@ var dashing=false
 @export var username=""
 var teamRequests=[]
 
-func initPlayer(spawnPoint=Vector2.ZERO):
+func initPlayer():
 	health=maxHealth
 	energy=baseMaxEnergy
 	velocity=Vector2.ZERO
-	position=spawnPoint
 	spectator=false
-	score=1
 	owner2=self
 	zoomLevel=0
 	$CollisionShape2D.disabled=false
@@ -171,6 +166,7 @@ func _process(delta):
 	
 	if multiplayer.get_unique_id()!=id:
 		return
+	get_node("CanvasLayer/Scores/ScoreDisplay/Label").text="Score: "+str(round(score))
 	
 	healthBar.max_value=maxHealth
 	healthBar.value=health
@@ -288,15 +284,16 @@ func takeDamage(d,source=null):
 		score=0
 		die()
 func onKill(victim):
-	score+=victim.score
 	energy+=maxEnergy/2.0
 	health+=maxHealth/6.0
+	Global.onKill.emit(self,victim)
 	
 func die():
-	spectator=true
-	$CollisionShape2D.disabled=true
-	deathSignal.emit(self)
-	rpc_id(id,"die_client")
+	if !spectator:
+		spectator=true
+		$CollisionShape2D.disabled=true
+		deathSignal.emit(self)
+		rpc_id(id,"die_client")
 @rpc("authority", "call_local", "reliable")
 func die_client():
 	get_node("CanvasLayer/DeathScreen").show()
@@ -379,3 +376,9 @@ func setAllowedActions(team,respawn,levelStarted):
 
 func close_messagebox():
 	get_node("CanvasLayer/MessageBox").hide()
+
+@rpc("authority","call_local","reliable")
+func updateScoreboard(scores):
+	var text="\n".join(scores.map(func(x): return x[2]+"-"+x[1]+": "+str(x[0])))
+	
+	get_node("CanvasLayer/Scores/Panel/Label").text=text

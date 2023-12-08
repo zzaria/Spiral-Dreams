@@ -15,6 +15,7 @@ const VIEWPORT_SIZE=Vector2(2560,1440)
 var level
 signal spawnObject(x:Node)
 signal changeLevel(level)
+signal onKill(killer:Node,killed:Node)
 
 var pendingconnections={}
 

@@ -1,4 +1,4 @@
-extends TrackingProjectile
+extends Character
 var bullet=load("res://scenes/projectiles/projectile_small.tscn")
 var enemy=load("res://scenes/projectiles/characters/Character1.tscn")
 
@@ -17,6 +17,7 @@ var pattern=0
 func _ready():
 	owner2=self
 	super()
+	score=1
 
 func resetStats():
 	followDistance=baseFollowDistance
