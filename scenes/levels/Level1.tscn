@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dkrycjw3dc2x6" path="res://scenes/levels/Level.tscn" id="1_kg5pl"]
 [ext_resource type="Texture2D" uid="uid://b81x3jl7xi5p4" path="res://art/h.jpg" id="3_07pgm"]
-[ext_resource type="PackedScene" uid="uid://8g1mfh745gnn" path="res://scenes/projectiles/characters/Character4.tscn" id="3_8doex"]
+[ext_resource type="PackedScene" uid="uid://bja6eqn3i7pyw" path="res://scenes/projectiles/characters/Marionette.tscn" id="3_co2ij"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w410a"]
 size = Vector2(16384, 16384)
@@ -20,4 +20,4 @@ texture = ExtResource("3_07pgm")
 region_enabled = true
 region_rect = Rect2(0, 0, 16000, 16000)
 
-[node name="Character4" parent="." index="4" instance=ExtResource("3_8doex")]
+[node name="Marionette" parent="." index="3" instance=ExtResource("3_co2ij")]

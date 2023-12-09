@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://crj1u6iwyxyy8"]
+
+[ext_resource type="PackedScene" uid="uid://dkrycjw3dc2x6" path="res://scenes/levels/Level.tscn" id="1_537di"]
+[ext_resource type="Texture2D" uid="uid://b81x3jl7xi5p4" path="res://art/h.jpg" id="3_2efsq"]
+[ext_resource type="PackedScene" uid="uid://dxnt4xe0gn128" path="res://scenes/projectiles/characters/Character10.tscn" id="3_5erdr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ett8"]
+size = Vector2(5000, 5000)
+
+[node name="Level4" instance=ExtResource("1_537di")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+shape = SubResource("RectangleShape2D_5ett8")
+
+[node name="Background" type="Node2D" parent="." index="1"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Background" index="0"]
+texture = ExtResource("3_2efsq")
+region_enabled = true
+region_rect = Rect2(-2000, -2000, 5000, 5000)
+
+[node name="MultiplayerSpawner" parent="." index="2"]
+_spawnable_scenes = PackedStringArray("res://scenes/projectiles/Projectile.tscn", "res://scenes/projectiles/projectile_small.tscn", "res://scenes/projectiles/interceptor.tscn", "res://scenes/projectiles/Missile.tscn", "res://scenes/projectiles/MissileMagic.tscn", "res://scenes/projectiles/Explosion.tscn", "res://scenes/projectiles/RailgunBullet.tscn", "res://scenes/projectiles/characters/Player.tscn", "res://scenes/projectiles/characters/Character1.tscn", "res://scenes/projectiles/characters/Character2.tscn", "res://scenes/projectiles/characters/Character3.tscn", "res://scenes/projectiles/characters/Character4.tscn", "res://scenes/projectiles/characters/Character6.tscn")
+
+[node name="Spawnpoints" type="Node" parent="." index="3"]
+
+[node name="Marker2D" type="Marker2D" parent="Spawnpoints" index="0"]
+position = Vector2(-2648, 2649)
+
+[node name="Marker2D2" type="Marker2D" parent="Spawnpoints" index="1"]
+position = Vector2(-3175, 5)
+
+[node name="Marker2D3" type="Marker2D" parent="Spawnpoints" index="2"]
+position = Vector2(-2763, -2774)
+
+[node name="Marker2D4" type="Marker2D" parent="Spawnpoints" index="3"]
+position = Vector2(2, -3318)
+
+[node name="Marker2D5" type="Marker2D" parent="Spawnpoints" index="4"]
+position = Vector2(3088, -2671)
+
+[node name="Marker2D6" type="Marker2D" parent="Spawnpoints" index="5"]
+position = Vector2(3433, -2)
+
+[node name="Marker2D7" type="Marker2D" parent="Spawnpoints" index="6"]
+position = Vector2(2816, 2664)
+
+[node name="Marker2D8" type="Marker2D" parent="Spawnpoints" index="7"]
+position = Vector2(-19, 3178)
+
+[node name="Character10" parent="." index="4" instance=ExtResource("3_5erdr")]

@@ -14,4 +14,6 @@ func changeLevel(newLevel=null):
 	else:
 		Global.level=null
 
+func _process(delta):
+	Global.time+=delta
 

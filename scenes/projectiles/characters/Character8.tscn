@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://cofkc6a0jt464"]
+
+[ext_resource type="Script" path="res://scenes/projectiles/characters/Character7.gd" id="1_dqj4o"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8qvnm"]
+radius = 15.0333
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mgwfn"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b001a"]
+radius = 1000.0
+
+[node name="Character8" type="Area2D" groups=["character"]]
+collision_mask = 3
+script = ExtResource("1_dqj4o")
+followDistance = 200
+jumpDistance = 300
+initialJumpDelay = 0.35
+jumpDelay = 1.2
+jumpDuration = 0.3
+targetDistance = 1000
+untargetDistance = 2000
+damage = 3
+maxHealth = 100
+team = 9999
+baseSpeed = 500
+metadata/_edit_group_ = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8qvnm")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_mgwfn")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_b001a")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_targeting_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -11,6 +11,7 @@ var assignTeams=false
 var teamAndRespawnDuringGame=0
 var password=""
 const VIEWPORT_SIZE=Vector2(2560,1440)
+var time=0
 
 var level
 signal spawnObject(x:Node)

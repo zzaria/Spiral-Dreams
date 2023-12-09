@@ -8,7 +8,6 @@ var teamCount = 0
 var playerCounter = 0
 var teamjoinrequests = []
 var teams = []
-var time = 0
 var teamAlivePlayerCount = []
 var scores=[]
 
@@ -169,7 +168,6 @@ func host_disconnected(id):
 
 
 func _on_area_2d_area_exited(area):
-	print_debug(area)
 	if !is_multiplayer_authority():
 		return
 	if area.get_groups().has("player"):
@@ -231,27 +229,23 @@ func newteamjoinrequest(a, b):
 		var c = false
 		for x in teamjoinrequests:  #ignore if same request was made in last 10 seconds
 			if x[0] == a && x[1] == b:
-				if x[2] > time - 10:
+				if x[2] > Global.time- 10:
 					return
-				x[2] = time
+				x[2] = Global.time
 				c = true
 		if !c:
-			teamjoinrequests += [[a, b, time]]
+			teamjoinrequests += [[a, b, Global.time]]
 		player2.showteamrequest.rpc_id(player2.id, a, player.name)
 
 
 func acceptteamrequest(a, b):
 	for x in teamjoinrequests:
-		if x[0] == a && x[1] == b && x[2] > time - 10:
+		if x[0] == a && x[1] == b && x[2] > Global.time- 10:
 			var player1 = playerFromId(a)
 			var player2 = playerFromName(b)
 			if player1 && player2:
 				switchPlayerToTeam(player1, player2.team)
 			return
-
-
-func _physics_process(delta):
-	time += delta
 
 func handleKill(killer:Node,killed:Node):
 	killer.score+=killed.score

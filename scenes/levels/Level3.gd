@@ -90,7 +90,6 @@ func checkGameOver():
 
 func handleKill(killer: Node, killed: Node):
 	killer.score += 50 if killed is TeamSpawn else 10 if !canRespawn[killed.team] else 1
-	print_debug(killer.score)
 	var x = false
 	for score in scores:
 		if score[1] == killer.name:

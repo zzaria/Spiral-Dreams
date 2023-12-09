@@ -220,12 +220,13 @@ text = "Level"
 custom_minimum_size = Vector2(200, 35)
 layout_mode = 2
 auto_height = true
-item_count = 4
+item_count = 5
 max_columns = 2
 item_0/text = "Standard (Small)"
 item_1/text = "Standard (Medium)"
 item_2/text = "Standard (Big)"
 item_3/text = "Base Defense"
+item_4/text = "Survival"
 
 [node name="CenterContainer" type="CenterContainer" parent="LevelConfig"]
 layout_mode = 2
