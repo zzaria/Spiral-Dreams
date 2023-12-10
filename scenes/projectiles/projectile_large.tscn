@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2ab40ii1yoe6"]
+
+[ext_resource type="Script" path="res://scenes/projectiles/Projectile.gd" id="1_hs5vf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8qvnm"]
+radius = 40.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mgwfn"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+
+[node name="ProjectileLarge" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_hs5vf")
+metadata/_edit_group_ = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8qvnm")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_mgwfn")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

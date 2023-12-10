@@ -1,5 +1,8 @@
 extends Character
 var bullet=load("res://scenes/projectiles/projectile_small.tscn")
+var bullet2=load("res://scenes/projectiles/Special3.tscn")
+var pauseMainAttackUntil=0
+var attack2Progress=-1
 var dash
 var energy=9999
 
@@ -77,6 +80,8 @@ func _on_timer_timeout():
 		return
 	if !target:
 		return
+	if pauseMainAttackUntil>Global.time:
+		return
 	const speed=700.0
 	var t=0.0
 	for i in range(2,-5,-1):
@@ -92,6 +97,7 @@ func _on_timer_timeout():
 func _on_targeting_area_entered(area):
 	if !is_multiplayer_authority():
 		return
+		
 	if team!=area.get("team")&&!area.get("spectator")&&area.get("damage")&&area.get("damage")>0:
 		incoming+=[area]
 	super(area)
@@ -101,3 +107,22 @@ func _on_targeting_area_entered(area):
 func _on_targeting_area_exited(area):
 	incoming.erase(area)
 
+
+
+func _on_timer_2_timeout():
+	attack2Progress=0
+	pauseMainAttackUntil=Global.time+5
+	$Timer3.start(0.15)
+
+
+func _on_timer_3_timeout():
+	attack2Progress+=1
+	var bullet=bullet2.instantiate()
+	var dir=Vector2.from_angle(2*PI/6.9*attack2Progress)
+	bullet.init(targetPos+dir*700,-dir*300,owner2,team,0.3,1)
+	bullet.fragmentSpeed=450
+	bullet.targetPos=targetPos
+	Global.spawnObject.emit(bullet)
+	if attack2Progress==20:
+		attack2Progress=0
+		$Timer3.stop()

@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dxnt4xe0gn128"]
+[gd_scene load_steps=5 format=3 uid="uid://cg0r3sqjs2fy1"]
 
-[ext_resource type="Script" path="res://scenes/projectiles/characters/Character10.gd" id="1_jpdbr"]
-[ext_resource type="PackedScene" uid="uid://d3rval4o57vbt" path="res://scenes/projectiles/characters/Character7a.tscn" id="2_dsupi"]
+[ext_resource type="Script" path="res://scenes/projectiles/characters/Boss1.gd" id="1_ni26r"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8qvnm"]
-radius = 15.0333
+radius = 100.0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mgwfn"]
 properties/0/path = NodePath(".:position")
@@ -15,16 +14,15 @@ properties/0/watch = false
 [sub_resource type="CircleShape2D" id="CircleShape2D_b001a"]
 radius = 1000.0
 
-[node name="Character10" type="Area2D" groups=["character"]]
+[node name="Boss1" type="Area2D" groups=["character"]]
 collision_mask = 3
-script = ExtResource("1_jpdbr")
-spawnList = Array[PackedScene]([ExtResource("2_dsupi")])
-jumpDistance = 200
+script = ExtResource("1_ni26r")
+baseFollowDistance = 250
 targetDistance = 1000
 untargetDistance = 2000
-damage = 3
-maxHealth = 40
+maxHealth = 100
 team = 9999
+baseSpeed = 200
 metadata/_edit_group_ = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -33,10 +31,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -15.0
-offset_top = -15.0
-offset_right = 15.0
-offset_bottom = 15.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
@@ -54,12 +52,8 @@ collision_layer = 2
 shape = SubResource("CircleShape2D_b001a")
 
 [node name="Timer" type="Timer" parent="."]
-
-[node name="Timer2" type="Timer" parent="."]
 wait_time = 5.0
 autostart = true
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_targeting_area_entered"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

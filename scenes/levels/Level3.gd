@@ -1,4 +1,4 @@
-extends xx
+extends Level
 
 var teamSpawnScene = preload("res://scenes/projectiles/characters/TeamSpawn.tscn")
 var spawners = []

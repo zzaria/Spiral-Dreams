@@ -1,11 +1,12 @@
-extends TrackingProjectile
+extends Character
+@export var bulletSpeed=600
+@export var bulletLifespan=1
 var bullet=load("res://scenes/projectiles/projectile_small.tscn")
 
 var targetPos
 @export var followDistance=300
 
 func _ready():
-	owner2=self
 	super()
 func init2(_position,_team,_owner2=null):
 	position=_position
@@ -32,8 +33,8 @@ func _on_timer_timeout():
 		return
 	if !targetPos:
 		return
-	var dir=(targetPos-position).normalized()*600
+	var dir=(targetPos-position).normalized()*bulletSpeed
 	var newBullet=bullet.instantiate()
-	newBullet.init(position,dir,owner2,team,2,1,1)
+	newBullet.init(position,dir,owner2,team,bulletLifespan,1,1)
 	newBullet.name=str(randi())
 	Global.spawnObject.emit(newBullet)

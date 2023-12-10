@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cr5oeu6j7wx1p"]
+
+[ext_resource type="PackedScene" uid="uid://xt22v7a85654" path="res://scenes/abilities/gun.tscn" id="1_o2w0h"]
+[ext_resource type="Script" path="res://scenes/abilities/turret.gd" id="2_elf6o"]
+
+[node name="Turret" instance=ExtResource("1_o2w0h")]
+script = ExtResource("2_elf6o")
+distance = 250
+bulletSpeed = 1100
+bulletLifespan = 2.0
+damage = 1.0
+cooldown = 0.025
+abilityType = 0
+
+[node name="Label" parent="." index="1"]
+text = "Turret"

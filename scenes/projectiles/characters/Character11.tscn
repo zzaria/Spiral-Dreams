@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dxnt4xe0gn128"]
+[gd_scene load_steps=8 format=3 uid="uid://xeseefo58p2i"]
 
-[ext_resource type="Script" path="res://scenes/projectiles/characters/Character10.gd" id="1_jpdbr"]
-[ext_resource type="PackedScene" uid="uid://d3rval4o57vbt" path="res://scenes/projectiles/characters/Character7a.tscn" id="2_dsupi"]
+[ext_resource type="Script" path="res://scenes/projectiles/characters/Character11.gd" id="1_38wfh"]
+[ext_resource type="PackedScene" uid="uid://52hh6oaw4yda" path="res://scenes/projectiles/characters/Character9.tscn" id="2_hd3on"]
+[ext_resource type="PackedScene" uid="uid://5lt8rbhgy880" path="res://scenes/projectiles/characters/Character7.tscn" id="3_h1k0y"]
+[ext_resource type="PackedScene" uid="uid://dxnt4xe0gn128" path="res://scenes/projectiles/characters/Character10.tscn" id="4_iykhp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8qvnm"]
 radius = 15.0333
@@ -15,15 +17,12 @@ properties/0/watch = false
 [sub_resource type="CircleShape2D" id="CircleShape2D_b001a"]
 radius = 1000.0
 
-[node name="Character10" type="Area2D" groups=["character"]]
+[node name="Character11" type="Area2D" groups=["character"]]
 collision_mask = 3
-script = ExtResource("1_jpdbr")
-spawnList = Array[PackedScene]([ExtResource("2_dsupi")])
-jumpDistance = 200
+script = ExtResource("1_38wfh")
+spawnList = Array[PackedScene]([ExtResource("2_hd3on"), ExtResource("3_h1k0y"), ExtResource("4_iykhp")])
 targetDistance = 1000
 untargetDistance = 2000
-damage = 3
-maxHealth = 40
 team = 9999
 metadata/_edit_group_ = true
 
@@ -49,11 +48,10 @@ replication_config = SubResource("SceneReplicationConfig_mgwfn")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_b001a")
-
-[node name="Timer" type="Timer" parent="."]
 
 [node name="Timer2" type="Timer" parent="."]
 wait_time = 5.0
@@ -61,5 +59,4 @@ autostart = true
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_targeting_area_entered"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

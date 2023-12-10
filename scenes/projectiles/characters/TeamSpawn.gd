@@ -12,7 +12,7 @@ func takeDamage(d,source=null):
 	if !healthEnabled:
 		return
 	super(d,source)
-	if health<0:
+	if health<=0:
 		if source:
 			source.onKill(self)
 		die()

@@ -1,11 +1,10 @@
-extends TrackingProjectile
+extends Character
 var bullet=load("res://scenes/projectiles/projectile_small.tscn")
 
 var targetPos
 var followDistance=50
 
 func _ready():
-	owner2=self
 	super()
 
 func _physics_process2(delta):

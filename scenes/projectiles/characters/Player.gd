@@ -280,14 +280,15 @@ func takeDamage(d,source=null):
 		return
 	super.takeDamage(d)
 	timeSinceHit=0
-	if health<0&&!spectator:
+	if health<=0&&!spectator:
 		if source!=null:
 			source.onKill(self)
 		score=0
 		die()
 func onKill(victim):
-	energy+=maxEnergy/2.0
-	health+=maxHealth/6.0
+	if victim.get_groups().has("player"):
+		energy+=maxEnergy/2.0
+		health+=maxHealth/6.0
 	Global.onKill.emit(self,victim)
 	
 func die():

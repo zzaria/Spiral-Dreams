@@ -1,6 +1,7 @@
 extends Projectile
 @export var subProjectile:PackedScene
 @export var density=20
+var fragmentSpeed=800
 var targetPos
 func init2(pos):
 	targetPos=pos
@@ -13,7 +14,7 @@ func _physics_process2(_delta):
 func die():
 	var offset=randf_range(0,2*PI)
 	for i in range(density):
-		var dir=Vector2.from_angle(i*2*PI/density+offset)*800
+		var dir=Vector2.from_angle(i*2*PI/density+offset)*fragmentSpeed
 		var proj=subProjectile.instantiate()
 		proj.init(position,dir,owner2,team,2,damage,health)
 		proj.name=str(randi())

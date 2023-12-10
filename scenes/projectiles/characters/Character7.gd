@@ -1,4 +1,4 @@
-extends TrackingProjectile
+extends Character
 
 var targetPos
 @export var followDistance=100
@@ -12,7 +12,6 @@ var jumpSpeed
 
 func _ready():
 	jumpSpeed=2.0*followDistance/jumpDuration
-	owner2=self
 	super()
 func init2(_position,_team,_owner2=null):
 	position=_position

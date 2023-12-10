@@ -1,5 +1,5 @@
 extends Level_Base
-class_name xx
+class_name Level
 
 @export var player_scene: PackedScene
 var initialEquip
@@ -10,6 +10,7 @@ var teamjoinrequests = []
 var teams = []
 var teamAlivePlayerCount = []
 var scores=[]
+var startingScore=1
 
 
 func _ready():
@@ -101,7 +102,7 @@ func start_game2():
 			Global.teamAndRespawnDuringGame < 2,
 			true
 		)
-		player.score=1
+		player.score=startingScore
 		setPlayerLocation(player)
 	updateScores()
 
@@ -139,7 +140,7 @@ func del_player_client(name):
 func respawn(player, check = true):
 	if check && levelStarted == 1 && Global.teamAndRespawnDuringGame >= 2:
 		return
-	player.score=1
+	player.score=startingScore
 	player.initPlayer()
 	setPlayerLocation(player)
 	teamAlivePlayerCount[player.team] += 1
@@ -170,7 +171,7 @@ func host_disconnected(id):
 func _on_area_2d_area_exited(area):
 	if !is_multiplayer_authority():
 		return
-	if area.get_groups().has("player"):
+	if area.get_groups().has("character"):
 		var bounds = get_node("Area2D/CollisionShape2D").shape.get_rect()
 		var newPos = area.position.clamp(bounds.position, bounds.end)
 		var dir = (area.position - newPos).normalized()

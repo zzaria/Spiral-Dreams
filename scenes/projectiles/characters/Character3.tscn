@@ -23,7 +23,7 @@ untargetDistance = 2000
 maxHealth = 30
 team = 9999
 baseAcceleration = 400
-baseSpeed = 10
+baseSpeed = 100
 metadata/_edit_group_ = true
 
 [node name="ColorRect" type="ColorRect" parent="."]

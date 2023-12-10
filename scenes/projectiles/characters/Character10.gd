@@ -1,9 +1,9 @@
-extends TrackingProjectile
+extends Character
 
 @export var spawnList: Array[PackedScene]
 
 var targetPos
-@export var followDistance=300
+@export var followDistance=700
 @export var jumpDistance=150
 var inJumpRange=false
 var jumping=false
@@ -14,7 +14,6 @@ var jumpProgress
 var originalPosition
 
 func _ready():
-	owner2=self
 	super()
 func init2(_position,_team,_owner2=null):
 	position=_position
