@@ -76,7 +76,7 @@ func _on_area_entered(area):
 		return
 	if area.get("damage")==null:
 		return
-	takeDamage(area.get("damage"),area.get("owner2"))
+	takeDamage(area.get("damage"),area)
 
 func takeDamage(d,_source=null):
 	health-=d

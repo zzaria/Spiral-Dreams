@@ -11,6 +11,7 @@ var targetPos
 var followDistance=0
 var dodgeDistance=80
 var pattern=0
+var phase=0
 var incoming=[]
 
 func _ready():
@@ -110,6 +111,8 @@ func _on_targeting_area_exited(area):
 
 
 func _on_timer_2_timeout():
+	if health<maxHealth*0.5:
+		phase=1
 	attack2Progress=0
 	pauseMainAttackUntil=Global.time+5
 	$Timer3.start(0.15)
@@ -120,9 +123,9 @@ func _on_timer_3_timeout():
 	var bullet=bullet2.instantiate()
 	var dir=Vector2.from_angle(2*PI/6.9*attack2Progress)
 	bullet.init(targetPos+dir*700,-dir*300,owner2,team,0.3,1)
-	bullet.fragmentSpeed=450
+	bullet.fragmentSpeed=400 if phase==0 else randi_range(300,500)
 	bullet.targetPos=targetPos
 	Global.spawnObject.emit(bullet)
-	if attack2Progress==20:
+	if attack2Progress==(20 if phase==0 else 30):
 		attack2Progress=0
 		$Timer3.stop()

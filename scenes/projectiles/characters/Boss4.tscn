@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://do1m0py168olx"]
 
-[ext_resource type="Script" path="res://scenes/projectiles/characters/Character4.gd" id="1_5v0a1"]
+[ext_resource type="Script" path="res://scenes/projectiles/characters/Boss4.gd" id="1_5v0a1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qrv70"]
 size = Vector2(50, 50)

@@ -1,8 +1,9 @@
 extends Character
 var bulletSmall=load("res://scenes/projectiles/projectile_small.tscn")
 var bulletMedium=load("res://scenes/projectiles/projectile.tscn")
-var bossPart1=load("res://scenes/projectiles/Boss2Part1.tscn")
-var bossPart2=load("res://scenes/projectiles/Boss2Part2.tscn")
+var bossPart1=load("res://scenes/projectiles/characters/Boss2Part1.tscn")
+var bossPart2=load("res://scenes/projectiles/characters/Boss2Part2.tscn")
+var bossPart3=load("res://scenes/projectiles/characters/Boss2Part3.tscn")
 var nextShot=0
 @export var bulletSpeed1=800
 var targetPos
@@ -55,7 +56,13 @@ func _physics_process2(delta):
 		else:
 			followDistance=baseFollowDistance3
 			acceleration=position.distance_to(target.position)/followDistance*500
-			speed=800 if position.distance_to(target.position)<followDistance else 10000
+			if position.distance_to(target.position)>followDistance:
+				speed=10000
+			else:
+				if velocity.length()>2000:
+					velocity*=0.5**(delta/0.2)
+				speed=max(800,velocity.length()*0.5**(delta/0.5))
+
 			bulletSpeed1=1000
 				
 			accelerationDir=(target.position-position).normalized()-velocity.normalized()
@@ -99,7 +106,7 @@ func setState(x):
 	match state:
 		0:
 			if health<maxHealth*0.5:
-				for i in range(8):
+				for i in range(10):
 					spawnMinion()
 				setState(1000)
 				return
@@ -124,13 +131,19 @@ func setState(x):
 			setState(1000)
 
 func spawnMinion():
-	if randi_range(0,3)==0:
+	var r=randi_range(0,99)
+	if r<25:
 		var part=bossPart2.instantiate()
-		part.init(Vector2.ZERO,Vector2.ZERO,owner2,team,60)
+		part.init(position,Vector2.ZERO,owner2,team,-1000000,10,50)
+		part.name="part2"+str(randi())
+		Global.spawnObject.emit(part)
+	elif r<50:
+		var part=bossPart3.instantiate()
+		part.init(position,Vector2.ZERO,owner2,team,-1000000,10,50)
 		part.name="part2"+str(randi())
 		Global.spawnObject.emit(part)
 	else:
 		var part=bossPart1.instantiate()
-		part.init(Vector2.ZERO,Vector2.ZERO,owner2,team,60)
+		part.init(Vector2.ZERO,Vector2.ZERO,owner2,team,-1000000,10,50)
 		part.name="part1"+str(randi())
 		add_child(part)
