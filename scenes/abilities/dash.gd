@@ -1,4 +1,4 @@
-extends ability
+extends Ability
 var dashing
 @export var distance=300
 func _ready():

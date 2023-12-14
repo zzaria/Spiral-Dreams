@@ -1,4 +1,4 @@
-extends ability
+extends Ability
 @export var bullet:PackedScene
 @export var bulletSpeed=1000
 @export var bulletHealth=2

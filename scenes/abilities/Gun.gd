@@ -1,4 +1,4 @@
-extends ability
+extends Ability
 class_name Gun
 @export var bullet:PackedScene
 @export var bulletSpeed=1000

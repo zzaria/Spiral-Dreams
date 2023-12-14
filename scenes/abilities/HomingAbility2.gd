@@ -10,7 +10,7 @@ func doAbility(mousePos):
 	super.doAbility(null)
 	inEffect=true
 	prevDuration=duration
-	mousePos1=mousePos
+	mousePos1=mousePos+bearer.position
 func doAbilityTimeout():
 	inEffect=false
 func doEffect():
@@ -20,9 +20,9 @@ func doEffect():
 			var pos0=bearer.position+Vector2.from_angle(randf_range(0,2*PI))*randf_range(0,100)
 			var newBullet=bullet.instantiate()
 			newBullet.init(pos0,Vector2.ZERO,bearer,bearer.team,bulletLifespan,damage,bulletHealth)
-			newBullet.init2(pattern,bearer.position+mousePos1*100,bulletSpeed,acceleration,true)
+			newBullet.init2(pattern,mousePos1,bulletSpeed,acceleration,true)
 			newBullet.name=str(randi())
 			Global.spawnObject.emit(newBullet)
 			await newBullet.ready
-			newBullet.find_new_target(bearer.position+mousePos1)
+			newBullet.find_new_target(mousePos1)
 

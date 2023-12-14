@@ -38,7 +38,6 @@ func _physics_process2(delta):
 
 func doPatternCycle():
 	while true:
-		print_debug(state)
 		if state==0:
 			var m=minion.instantiate()
 			m.init(position,Vector2.from_angle(randf()*2*PI)*500,owner2,team,-1000000,0,50)

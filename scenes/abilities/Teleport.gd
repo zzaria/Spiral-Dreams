@@ -1,4 +1,4 @@
-extends ability
+extends Ability
 
 func doAbility(mousePos):
 	super.doAbility(mousePos)

@@ -1,4 +1,4 @@
-extends ability
+extends Ability
 
 @export var speed=0
 @export var acceleration=0

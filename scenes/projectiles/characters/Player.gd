@@ -56,6 +56,26 @@ func setItem_client(index,item):
 	if not slots:
 		return
 	slots[index].setItem(item)
+func pickUpItem(item):
+	for i in range(inventorySize):
+		if !items[i]:
+			setItem(i,item)
+			return true
+	return false
+var droppedItemContainer=load("res://dropped_item.tscn")
+@rpc("any_peer","call_local","reliable")
+func dropItem(mousePos):
+	if id!=multiplayer.get_remote_sender_id()||!is_multiplayer_authority():
+		return
+	if curDragItem==null:
+		return
+	var droppedItem=droppedItemContainer.instantiate()
+	droppedItem.item=items[curDragItem]
+	droppedItem.position=position+mousePos.normalized()*50
+	Global.spawnObject.emit(droppedItem)
+	setItem(curDragItem,null)
+	curDragItem=null
+
 var curDragItem
 func inventoryDrag(index):
 	curDragItem=index
@@ -85,10 +105,11 @@ func inventorySlotRightClick(index):
 	
 func resetInventory():
 	items=[]
+	items.resize(inventorySize)
+	items.fill(null)
 	itemDisabled=[]
-	for i in range(0,inventorySize):
-		items+=[null]
-		itemDisabled+=[false]
+	itemDisabled.resize(inventorySize)
+	itemDisabled.fill(false)
 	var i=0
 	for item in Global.initialEquip:
 		setItem(i,item.duplicate())
@@ -188,8 +209,11 @@ func _process(delta):
 	var viewSize=get_viewport().size
 
 	cam.zoom=Vector2.ONE*2.0**zoomLevel*min(viewSize.x/Global.VIEWPORT_SIZE.x,viewSize.y/Global.VIEWPORT_SIZE.y)
+
 	doAbilities()
 	doMovement(delta)
+
+
 		
 func _physics_process2(delta):
 	var i=0
@@ -235,6 +259,11 @@ func doAbilities():
 		var mousePos=get_viewport().get_mouse_position()-Vector2(get_viewport().size/2)
 		mousePos/=cam.zoom
 		rpc_id(1,"doAbilitiesServer",mousePos,useSlots,toggleSlots)
+	if Input.is_action_just_pressed("drop_item"):
+		var mousePos=get_viewport().get_mouse_position()-Vector2(get_viewport().size/2)
+		dropItem.rpc_id(1,mousePos)
+		inventory.remove_child(inventory.heldItem)
+		inventory.heldItem=null
 
 @rpc("any_peer", "call_local") func doAbilitiesServer(mousePos,useSlots,toggleSlots):
 	if id!=multiplayer.get_remote_sender_id()||!is_multiplayer_authority():
@@ -385,3 +414,7 @@ func updateScoreboard(scores):
 	var text="\n".join(scores.map(func(x): return x[2]+"-"+x[1]+": "+str(x[0])))
 	
 	get_node("CanvasLayer/Scores/Panel/Label").text=text
+
+
+func _on_area_entered_physics(area):
+	pass # Replace with function body.

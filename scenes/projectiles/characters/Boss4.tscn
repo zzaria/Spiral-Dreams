@@ -14,7 +14,7 @@ properties/0/watch = false
 [sub_resource type="CircleShape2D" id="CircleShape2D_b001a"]
 radius = 1000.0
 
-[node name="Character4" type="Area2D" groups=["character"]]
+[node name="Boss4" type="Area2D" groups=["character"]]
 position = Vector2(-1, 0)
 collision_mask = 3
 script = ExtResource("1_5v0a1")
@@ -56,6 +56,6 @@ shape = SubResource("CircleShape2D_b001a")
 wait_time = 30.0
 autostart = true
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"] 
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_targeting_area_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

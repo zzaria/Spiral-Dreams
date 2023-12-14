@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cn04epks6g33b"]
+[gd_scene load_steps=6 format=3 uid="uid://cn04epks6g33b"]
 
 [ext_resource type="PackedScene" uid="uid://dkrycjw3dc2x6" path="res://scenes/levels/Level.tscn" id="1_kg5pl"]
+[ext_resource type="PackedScene" uid="uid://bwryb31r6bodw" path="res://scenes/projectiles/characters/Boss2.tscn" id="3_0sck1"]
 [ext_resource type="Texture2D" uid="uid://b81x3jl7xi5p4" path="res://art/h.jpg" id="3_07pgm"]
-[ext_resource type="PackedScene" uid="uid://bja6eqn3i7pyw" path="res://scenes/projectiles/characters/Marionette.tscn" id="3_co2ij"]
+[ext_resource type="PackedScene" uid="uid://bja6eqn3i7pyw" path="res://scenes/projectiles/characters/Marionette.tscn" id="4_etsp8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w410a"]
 size = Vector2(16384, 16384)
@@ -13,11 +14,20 @@ size = Vector2(16384, 16384)
 shape = SubResource("RectangleShape2D_w410a")
 
 [node name="Background" type="Node2D" parent="." index="1"]
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Background" index="0"]
 texture_repeat = 2
 texture = ExtResource("3_07pgm")
 region_enabled = true
 region_rect = Rect2(0, 0, 16000, 16000)
+metadata/_edit_lock_ = true
 
-[node name="Marionette" parent="." index="3" instance=ExtResource("3_co2ij")]
+[node name="MultiplayerSpawner" parent="." index="2"]
+_spawnable_scenes = PackedStringArray("res://scenes/projectiles/Projectile.tscn", "res://scenes/projectiles/projectile_small.tscn", "res://scenes/projectiles/interceptor.tscn", "res://scenes/projectiles/Missile.tscn", "res://scenes/projectiles/MissileMagic.tscn", "res://scenes/projectiles/Explosion.tscn", "res://scenes/projectiles/RailgunBullet.tscn", "res://scenes/projectiles/characters/Player.tscn", "res://scenes/projectiles/characters/Character1.tscn", "res://scenes/projectiles/characters/Character2.tscn", "res://scenes/projectiles/characters/Character6.tscn", "res://scenes/projectiles/characters/TeamSpawn.tscn")
+
+[node name="Boss2" parent="." index="3" instance=ExtResource("3_0sck1")]
+position = Vector2(-6198, -2481)
+
+[node name="Marionette" parent="." index="4" instance=ExtResource("4_etsp8")]
+position = Vector2(-7222, -624)

@@ -102,7 +102,6 @@ func _physics_process2(delta):
 
 func setState(x):
 	state=x
-	print_debug(state)
 	match state:
 		0:
 			if health<maxHealth*0.5:
@@ -110,7 +109,7 @@ func setState(x):
 					spawnMinion()
 				setState(1000)
 				return
-			setState(randi_range(1,1))
+			setState(randi_range(1,2))
 		1:
 			jumping=false
 			$Timer.start(5)

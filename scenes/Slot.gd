@@ -3,7 +3,7 @@ extends Panel
 signal dragSignal(index)
 signal dropSignal(index)
 signal rightClickSignal(index)
-@export var item:ability=null
+@export var item:Ability=null
 var inventory
 var index
 var disabled=false

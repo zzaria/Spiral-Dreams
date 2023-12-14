@@ -1,5 +1,5 @@
 extends Node2D
-class_name ability
+class_name Ability
 
 @export var damage = 1.0 
 @export var cooldown = 0.1 
