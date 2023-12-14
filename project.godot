@@ -145,3 +145,8 @@ drop_item={
 2d_physics/layer_3="destructible projectile"
 2d_physics/layer_4="destructible projectile destroyer"
 2d_physics/layer_5="player"
+
+[physics]
+
+common/physics_ticks_per_second=1000
+common/max_physics_steps_per_frame=100
