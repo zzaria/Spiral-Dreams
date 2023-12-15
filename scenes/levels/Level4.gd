@@ -5,11 +5,12 @@ var character10=load("res://scenes/projectiles/characters/Character10.tscn")
 var character7b=load("res://scenes/projectiles/characters/Character7b.tscn")
 var character9a=load("res://scenes/projectiles/characters/Character9a.tscn")
 var character11=load("res://scenes/projectiles/characters/Character11.tscn")
+var boss4=load("res://scenes/projectiles/characters/Boss4.tscn")
 var enemySpawnPoints: Array[Node]
-var waveCount=1
-var waveSize:Array[int]=[1,5,2,1]
-var waveEnemies=[[character11],[character9],[character10],[character7b]]
-var waveSpawnRates:Array[float]=[1,3,5,1]
+var waveCount=2
+var waveSize:Array[int]=[5,1]
+var waveEnemies=[[character7],[boss4]]
+var waveSpawnRates:Array[float]=[1,1]
 var waveRestTime:float=10
 var waveProgress:int
 var waveSpawnComplete:bool

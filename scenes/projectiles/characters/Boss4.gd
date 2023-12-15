@@ -5,14 +5,15 @@ var enemy=load("res://scenes/projectiles/characters/Character1.tscn")
 var targetPos
 @export var baseFollowDistance=400
 var followDistance=0
-var spinSpeeds=[2**0.5,3.0/37,2.0/31,1.0/16*0.995,1.0/10*0.995,1.0/7*0.99,1.0/5*0.99,1.0/4*0.99,1.0/3*0.99,1.0/2*0.99,1.0-0.01,0]
+var spinSpeeds=[1.618033,3.0/37,2.0/31,1.0/16*0.995,1.0/10*0.995,1.0/7*0.99,1.0/5*0.99,1.0/4*0.99,1.0/3*0.99,1.0/2*0.99,1.0-0.01,0]
 var spinIndex=0
-var spinSpeed=2**0.5
+var spinSpeed=1.618033
 var spin=0
 var spinMultiplier=1
 var time=0
 var cooldown=0.03
 var pattern=0
+@export var bounds:Rect2
 
 func _ready():
 	owner2=self
@@ -26,18 +27,22 @@ func resetStats():
 func _physics_process2(delta):
 	if !is_multiplayer_authority():
 		return
-	if pattern==1||pattern==3:
+	if spinIndex>=2:
 		speed=200
 		followDistance=50
-	if pattern==2||pattern==3:
+		if target&&pattern:
+			targetPos=target.position
+		if targetPos!=null&&(targetPos-position).length()>followDistance:
+			accelerationDir=targetPos-position
+			accelerationDir=accelerationDir.normalized()
+			velocity*=0.8**delta
+	else:
+		if !targetPos||position.distance_to(targetPos)<10:
+			targetPos=Vector2(randi_range(bounds.position.x,bounds.end.x),randi_range(bounds.position.y,bounds.end.y))
+		velocity=(targetPos-position).normalized()*speed
+	if spinIndex==1:
 		if randf_range(0,3)<delta: #linear approximation
 			spawnEnemy()
-	if target:
-		targetPos=target.position
-	if targetPos!=null&&(targetPos-position).length()>followDistance:
-		accelerationDir=targetPos-position
-		accelerationDir=accelerationDir.normalized()
-		velocity*=0.8**delta
 	time+=delta
 	while time>0:
 		time-=cooldown
@@ -46,6 +51,9 @@ func _physics_process2(delta):
 		spinIndex+=1
 		var tween=get_tree().create_tween()
 		tween.tween_property(self,"spinSpeed",spinSpeeds[spinIndex],5)
+		if spinIndex==1:
+			for i in range(8):
+				spawnEnemy()
 		if spinIndex==3:
 			$Timer.start(4)
 		pattern=0
@@ -79,11 +87,5 @@ func _on_timer_timeout():
 		return
 	pattern+=1
 	$Timer.start(30)
-	if pattern==2:
-		var cnt=randi_range(4,8)
-		for i in range(cnt):
-			spawnEnemy()
-	elif pattern>=3:
-		pattern=3	
 		
 		

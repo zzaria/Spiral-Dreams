@@ -23,9 +23,11 @@ func _gui_input(event):
 				drag()
 				temp.global_position=get_viewport().get_mouse_position()
 				inventory.heldItem=temp
+			accept_event()
 		elif event.button_index==MOUSE_BUTTON_RIGHT&&event.pressed:
 			rightClickSignal.emit(index)
 			disabled=!disabled
+			accept_event()
 	if disabled:
 		modulate=Color("#333333")
 	else:

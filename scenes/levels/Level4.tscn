@@ -22,7 +22,7 @@ region_enabled = true
 region_rect = Rect2(-2000, -2000, 5000, 5000)
 
 [node name="MultiplayerSpawner" parent="." index="2"]
-_spawnable_scenes = PackedStringArray("res://scenes/projectiles/Projectile.tscn", "res://scenes/projectiles/projectile_small.tscn", "res://scenes/projectiles/interceptor.tscn", "res://scenes/projectiles/Missile.tscn", "res://scenes/projectiles/MissileMagic.tscn", "res://scenes/projectiles/Explosion.tscn", "res://scenes/projectiles/RailgunBullet.tscn", "res://scenes/projectiles/characters/Player.tscn", "res://scenes/projectiles/characters/Character1.tscn", "res://scenes/projectiles/characters/Character2.tscn", "res://scenes/projectiles/characters/Character3.tscn", "res://scenes/projectiles/characters/Character4.tscn", "res://scenes/projectiles/characters/Character6.tscn")
+_spawnable_scenes = PackedStringArray("res://scenes/projectiles/Projectile.tscn", "res://scenes/projectiles/projectile_small.tscn", "res://scenes/projectiles/interceptor.tscn", "res://scenes/projectiles/Missile.tscn", "res://scenes/projectiles/MissileMagic.tscn", "res://scenes/projectiles/Explosion.tscn", "res://scenes/projectiles/RailgunBullet.tscn", "res://scenes/projectiles/characters/Player.tscn", "res://scenes/projectiles/characters/Character1.tscn", "res://scenes/projectiles/characters/Character2.tscn", "res://scenes/projectiles/characters/Character6.tscn")
 
 [node name="Spawnpoints" type="Node" parent="." index="3"]
 

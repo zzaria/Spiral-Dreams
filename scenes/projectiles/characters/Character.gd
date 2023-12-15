@@ -16,7 +16,7 @@ func takeDamage(d,source=null):
 	super(d)
 	if health<=0:
 		if source:
-			source.onKill(self)
+			source.owner2.onKill(self)
 		die()
 func onKill(victim):
 	Global.onKill.emit(self,victim)

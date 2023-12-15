@@ -54,12 +54,12 @@ func setState(x):
 		0:
 			if state2==0&&health<maxHealth*0.5:
 				state2=1
-			setState(randi_range(1,2))
+			setState(randi_range(1,4))
 		1:
 			velocity=Vector2.ZERO
 			var tween=get_tree().create_tween()
 			tween.tween_property(self,"position",targetPos,0.5)
-			$Timer.start(3)
+			$Timer.start(2)
 			await $Timer.timeout
 			setState(100)
 		2:
@@ -105,11 +105,7 @@ func setState(x):
 				$Timer.start(0.2)
 				await $Timer.timeout
 			setState(100)
-		5,6:
-			$Timer.start(5)
-			await $Timer.timeout
-			setState(100)
 		100:
-			$Timer.start(5)
+			$Timer.start(3)
 			await $Timer.timeout
 			setState(0)

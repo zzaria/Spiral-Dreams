@@ -13,6 +13,7 @@ func _ready():
 func _physics_process2(delta):
 	super(delta)
 	if !owner2:
+		queue_free()
 		return
 	var targetPos=randomSpot+owner2.position
 	accelerationDir=targetPos-position
@@ -32,3 +33,9 @@ func doMovement():
 		randomSpot=Vector2(randf_range(-movementRange,movementRange),randf_range(-movementRange,movementRange))
 		$Timer.start(randf_range(3,8))
 		await $Timer.timeout
+
+func die():
+	if is_instance_valid(owner2):
+		owner2.bossPartCount[1]-=1
+	super()
+		

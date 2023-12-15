@@ -4,6 +4,7 @@ var bulletMedium=load("res://scenes/projectiles/projectile.tscn")
 var bossPart1=load("res://scenes/projectiles/characters/Boss2Part1.tscn")
 var bossPart2=load("res://scenes/projectiles/characters/Boss2Part2.tscn")
 var bossPart3=load("res://scenes/projectiles/characters/Boss2Part3.tscn")
+var bossPartCount=[0,0,0]
 var nextShot=0
 @export var bulletSpeed1=800
 var targetPos
@@ -106,7 +107,10 @@ func setState(x):
 		0:
 			if health<maxHealth*0.5:
 				for i in range(10):
-					spawnMinion()
+					spawnMinion(0)
+				for i in range(2):
+					spawnMinion(1)
+					spawnMinion(2)
 				setState(1000)
 				return
 			setState(randi_range(1,2))
@@ -124,25 +128,31 @@ func setState(x):
 			await $Timer.timeout
 			setState(0)
 		1000:
-			spawnMinion()
+			var r=randi_range(0,99)
+			if r<20&&bossPartCount[2]<1:
+				spawnMinion(2)
+			elif bossPartCount[0]<3||bossPartCount[0]<6&&r<40:
+				spawnMinion(0)
 			$Timer.start(5)
 			await $Timer.timeout
 			setState(1000)
 
-func spawnMinion():
-	var r=randi_range(0,99)
-	if r<25:
+func spawnMinion(type:int):
+	if type==1:
 		var part=bossPart2.instantiate()
 		part.init(position,Vector2.ZERO,owner2,team,-1000000,10,50)
 		part.name="part2"+str(randi())
 		Global.spawnObject.emit(part)
-	elif r<50:
+		bossPartCount[1]+=1
+	elif type==2:
 		var part=bossPart3.instantiate()
 		part.init(position,Vector2.ZERO,owner2,team,-1000000,10,50)
 		part.name="part2"+str(randi())
 		Global.spawnObject.emit(part)
+		bossPartCount[2]+=1
 	else:
 		var part=bossPart1.instantiate()
 		part.init(Vector2.ZERO,Vector2.ZERO,owner2,team,-1000000,10,50)
 		part.name="part1"+str(randi())
 		add_child(part)
+		bossPartCount[0]+=1
